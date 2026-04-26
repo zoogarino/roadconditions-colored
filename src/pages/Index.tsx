@@ -82,7 +82,7 @@ const Index = () => {
     <div className="min-h-screen bg-pgn-warm-border/40 flex items-center justify-center md:p-8">
       <div className="w-full md:w-[390px] md:h-[844px] md:rounded-[44px] md:shadow-2xl md:border-[10px] md:border-pgn-dark bg-background overflow-hidden relative flex flex-col min-h-screen md:min-h-0">
         {/* Notch */}
-        <div className="hidden md:block absolute top-0 left-1/2 -translate-x-1/2 w-[120px] h-[28px] bg-foreground/80 rounded-b-[18px] z-50" />
+        <div className="hidden md:block absolute top-0 left-1/2 -translate-x-1/2 w-[120px] h-[28px] bg-pgn-dark rounded-b-[18px] z-50" />
 
         {/* Status bar */}
         <div className="h-11 flex items-end justify-between px-7 pb-1 text-[11px] font-semibold bg-card flex-shrink-0">
