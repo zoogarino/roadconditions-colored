@@ -139,12 +139,12 @@ const Index = () => {
               transition={{ type: 'spring', damping: 25, stiffness: 300 }}
               className="absolute bottom-12 left-4 right-4 z-[60]"
             >
-              <div className={`rounded-xl px-4 py-3 shadow-lg text-sm font-medium text-center ${
+              <div className={`rounded-xl px-4 py-3 shadow-lg text-sm font-medium text-center text-white ${
                 toast.type === 'success'
-                  ? 'bg-minor/90 text-card'
+                  ? 'bg-minor/95'
                   : toast.type === 'warning'
-                  ? 'bg-moderate/90 text-card'
-                  : 'bg-foreground/90 text-card'
+                  ? 'bg-primary/95'
+                  : 'bg-pgn-dark/95'
               }`}>
                 {toast.message}
               </div>
