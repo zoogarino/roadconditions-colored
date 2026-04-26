@@ -53,15 +53,15 @@ export const FeedScreen = ({ onNavigate, isOffline, showToast }: FeedScreenProps
     <div className="h-full flex flex-col relative bg-background">
       {/* Offline banner */}
       {isOffline && !bannerDismissed && (
-        <div className="bg-foreground/85 px-4 py-2.5 flex items-center justify-between flex-shrink-0">
-          <div className="flex items-center gap-2 text-card">
+        <div className="bg-pgn-dark px-4 py-2.5 flex items-center justify-between flex-shrink-0">
+          <div className="flex items-center gap-2 text-white">
             <span className="text-xs">📡</span>
             <div>
               <p className="text-xs font-semibold">Offline Mode</p>
               <p className="text-[10px] opacity-80">You can view cached posts &amp; create new ones</p>
             </div>
           </div>
-          <button onClick={() => setBannerDismissed(true)} className="text-card/70 p-1"><X size={14} /></button>
+          <button onClick={() => setBannerDismissed(true)} className="text-white/70 p-1"><X size={14} /></button>
         </div>
       )}
 
