@@ -4,39 +4,56 @@
 
 @layer base {
   :root {
-    --background: 0 0% 96%;
-    --foreground: 220 13% 18%;
+    /* Pocket Guide Namibia palette
+       parchment #FDF6EE, sand #F5ECD7, warm-border #E8D9C8,
+       terracotta #D4854A, navy #1B3F8F, blue #29ABE2,
+       warm-brown #8B5E3C, muted #8B9EB0, dark #3D3530 */
+
+    --background: 33 76% 96%;            /* parchment #FDF6EE */
+    --foreground: 222 68% 33%;           /* navy #1B3F8F – primary text */
 
     --card: 0 0% 100%;
-    --card-foreground: 220 13% 18%;
+    --card-foreground: 222 68% 33%;
 
     --popover: 0 0% 100%;
-    --popover-foreground: 220 13% 18%;
+    --popover-foreground: 222 68% 33%;
 
-    --primary: 187 100% 42%;
+    --primary: 25 60% 56%;               /* terracotta #D4854A */
     --primary-foreground: 0 0% 100%;
 
-    --secondary: 200 12% 90%;
-    --secondary-foreground: 220 13% 18%;
+    --secondary: 39 65% 90%;             /* sand #F5ECD7 */
+    --secondary-foreground: 27 41% 39%;  /* warm-brown #8B5E3C */
 
-    --muted: 210 14% 93%;
-    --muted-foreground: 220 9% 46%;
+    --muted: 33 76% 96%;                 /* parchment */
+    --muted-foreground: 210 17% 62%;     /* #8B9EB0 */
 
-    --accent: 187 60% 92%;
-    --accent-foreground: 187 100% 30%;
+    --accent: 25 60% 56%;                /* terracotta active states */
+    --accent-foreground: 0 0% 100%;
 
-    --destructive: 0 84% 60%;
+    --destructive: 0 84% 60%;            /* functional red – keep */
     --destructive-foreground: 0 0% 100%;
 
-    --border: 220 13% 91%;
-    --input: 220 13% 91%;
-    --ring: 187 100% 42%;
+    --border: 27 41% 85%;                /* warm-border #E8D9C8 */
+    --input: 27 41% 85%;
+    --ring: 198 76% 53%;                 /* blue #29ABE2 – focus */
 
     --radius: 0.75rem;
 
-    --severe: 0 84% 55%;
-    --moderate: 38 92% 50%;
-    --minor: 152 69% 41%;
+    /* PGN brand tokens (named for clarity) */
+    --pgn-blue: 198 76% 53%;             /* #29ABE2 info / links / focus */
+    --pgn-navy: 222 68% 33%;             /* #1B3F8F titles / body */
+    --pgn-terracotta: 25 60% 56%;        /* #D4854A primary action */
+    --pgn-sand: 39 65% 90%;              /* #F5ECD7 */
+    --pgn-parchment: 33 76% 96%;         /* #FDF6EE */
+    --pgn-warm-border: 27 41% 85%;       /* #E8D9C8 */
+    --pgn-warm-brown: 27 41% 39%;        /* #8B5E3C */
+    --pgn-muted: 210 17% 62%;            /* #8B9EB0 */
+    --pgn-dark: 24 11% 22%;              /* #3D3530 */
+
+    /* Functional severity colors – do NOT change */
+    --severe: 0 84% 60%;                 /* #EF4444 */
+    --moderate: 38 92% 50%;              /* #F59E0B */
+    --minor: 152 76% 39%;                /* #10B981 */
 
     --sidebar-background: 0 0% 98%;
     --sidebar-foreground: 240 5.3% 26.1%;
