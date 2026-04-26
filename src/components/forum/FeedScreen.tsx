@@ -53,15 +53,15 @@ export const FeedScreen = ({ onNavigate, isOffline, showToast }: FeedScreenProps
     <div className="h-full flex flex-col relative bg-background">
       {/* Offline banner */}
       {isOffline && !bannerDismissed && (
-        <div className="bg-foreground/85 px-4 py-2.5 flex items-center justify-between flex-shrink-0">
-          <div className="flex items-center gap-2 text-card">
+        <div className="bg-pgn-dark px-4 py-2.5 flex items-center justify-between flex-shrink-0">
+          <div className="flex items-center gap-2 text-white">
             <span className="text-xs">📡</span>
             <div>
               <p className="text-xs font-semibold">Offline Mode</p>
               <p className="text-[10px] opacity-80">You can view cached posts &amp; create new ones</p>
             </div>
           </div>
-          <button onClick={() => setBannerDismissed(true)} className="text-card/70 p-1"><X size={14} /></button>
+          <button onClick={() => setBannerDismissed(true)} className="text-white/70 p-1"><X size={14} /></button>
         </div>
       )}
 
@@ -69,12 +69,14 @@ export const FeedScreen = ({ onNavigate, isOffline, showToast }: FeedScreenProps
       <div className="bg-card px-4 py-3 border-b border-border">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-3">
-            <ArrowLeft size={20} className="text-foreground" />
-            <h1 className="font-semibold text-[15px] text-foreground">Road Conditions</h1>
+            <button className="w-8 h-8 rounded-full bg-pgn-dark text-white flex items-center justify-center">
+              <ArrowLeft size={16} />
+            </button>
+            <h1 className="font-semibold text-[15px] text-primary">Road Conditions</h1>
           </div>
           <div className="flex items-center gap-3">
             <button onClick={() => setShowSearch(!showSearch)} className="p-1">
-              <Search size={20} className="text-foreground" />
+              <Search size={20} className="text-pgn-blue" />
             </button>
             <div className="relative">
               <div className="w-5 h-5" />
@@ -134,7 +136,7 @@ export const FeedScreen = ({ onNavigate, isOffline, showToast }: FeedScreenProps
             {activeFilters.map(id => {
               const chip = filterChips.find(c => c.id === id);
               return chip ? (
-                <span key={id} className="inline-flex items-center gap-1 px-2.5 py-1 bg-accent text-accent-foreground rounded-full text-[11px] font-medium">
+                <span key={id} className="inline-flex items-center gap-1 px-2.5 py-1 bg-pgn-sand text-pgn-warm-brown rounded-full text-[11px] font-medium border border-border">
                   {chip.icon} {chip.label}
                   <button onClick={() => toggleFilter(id)}>
                     <X size={10} />
