@@ -69,12 +69,14 @@ export const FeedScreen = ({ onNavigate, isOffline, showToast }: FeedScreenProps
       <div className="bg-card px-4 py-3 border-b border-border">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-3">
-            <ArrowLeft size={20} className="text-foreground" />
-            <h1 className="font-semibold text-[15px] text-foreground">Road Conditions</h1>
+            <button className="w-8 h-8 rounded-full bg-pgn-dark text-white flex items-center justify-center">
+              <ArrowLeft size={16} />
+            </button>
+            <h1 className="font-semibold text-[15px] text-primary">Road Conditions</h1>
           </div>
           <div className="flex items-center gap-3">
             <button onClick={() => setShowSearch(!showSearch)} className="p-1">
-              <Search size={20} className="text-foreground" />
+              <Search size={20} className="text-pgn-blue" />
             </button>
             <div className="relative">
               <div className="w-5 h-5" />
