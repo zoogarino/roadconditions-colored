@@ -136,7 +136,7 @@ export const FeedScreen = ({ onNavigate, isOffline, showToast }: FeedScreenProps
             {activeFilters.map(id => {
               const chip = filterChips.find(c => c.id === id);
               return chip ? (
-                <span key={id} className="inline-flex items-center gap-1 px-2.5 py-1 bg-accent text-accent-foreground rounded-full text-[11px] font-medium">
+                <span key={id} className="inline-flex items-center gap-1 px-2.5 py-1 bg-pgn-sand text-pgn-warm-brown rounded-full text-[11px] font-medium border border-border">
                   {chip.icon} {chip.label}
                   <button onClick={() => toggleFilter(id)}>
                     <X size={10} />
