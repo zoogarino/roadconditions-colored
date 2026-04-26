@@ -50,6 +50,17 @@ export default {
         severe: "hsl(var(--severe))",
         moderate: "hsl(var(--moderate))",
         minor: "hsl(var(--minor))",
+        pgn: {
+          blue: "hsl(var(--pgn-blue))",
+          navy: "hsl(var(--pgn-navy))",
+          terracotta: "hsl(var(--pgn-terracotta))",
+          sand: "hsl(var(--pgn-sand))",
+          parchment: "hsl(var(--pgn-parchment))",
+          "warm-border": "hsl(var(--pgn-warm-border))",
+          "warm-brown": "hsl(var(--pgn-warm-brown))",
+          muted: "hsl(var(--pgn-muted))",
+          dark: "hsl(var(--pgn-dark))",
+        },
         sidebar: {
           DEFAULT: "hsl(var(--sidebar-background))",
           foreground: "hsl(var(--sidebar-foreground))",
