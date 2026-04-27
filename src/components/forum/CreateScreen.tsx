@@ -302,11 +302,11 @@ export const CreateScreen = ({ onBack, isOffline }: CreateScreenProps) => {
                     key={sev}
                     onClick={() => setSeverity(sev)}
                     className={`w-full flex items-center gap-3 p-3.5 rounded-xl border-2 transition-all active:scale-[0.98] ${
-                      isSelected ? 'border-primary bg-accent' : 'border-border bg-card'
+                      isSelected ? 'border-pgn-navy bg-primary' : 'border-border bg-card'
                     }`}
                   >
                     <div className={`w-4 h-4 rounded-full ${config.dot}`} />
-                    <span className={`text-sm font-medium ${isSelected ? 'text-primary' : 'text-foreground'}`}>{config.fullLabel}</span>
+                    <span className={`text-sm font-medium ${isSelected ? 'text-pgn-navy' : 'text-foreground'}`}>{config.fullLabel}</span>
                   </button>
                 );
               })}
