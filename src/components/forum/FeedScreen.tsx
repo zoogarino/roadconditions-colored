@@ -208,8 +208,19 @@ export const FeedScreen = ({ onNavigate, isOffline, showToast }: FeedScreenProps
         <ContextMenu
           isOwn={contextMenu.isOwn}
           onClose={() => setContextMenu(null)}
+          onReport={() => setShowReport(true)}
         />
       )}
+      {showReport && (
+        <ReportModal
+          onClose={() => setShowReport(false)}
+          onSubmit={() => {
+            setReportSuccess(true);
+            setTimeout(() => setReportSuccess(false), 2500);
+          }}
+        />
+      )}
+      <ReportSuccessToast visible={reportSuccess} />
     </div>
   );
 };
