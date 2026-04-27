@@ -121,7 +121,7 @@ export const FeedScreen = ({ onNavigate, isOffline, showToast }: FeedScreenProps
               onClick={() => toggleFilter(chip.id)}
               className={`px-3 py-1.5 rounded-full text-xs font-medium whitespace-nowrap flex-shrink-0 transition-colors duration-200 ${
                 activeFilters.includes(chip.id)
-                  ? 'bg-primary text-primary-foreground'
+                  ? 'bg-primary text-pgn-navy'
                   : 'bg-secondary text-secondary-foreground'
               }`}
             >
