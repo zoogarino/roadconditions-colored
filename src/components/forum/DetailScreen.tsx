@@ -52,6 +52,8 @@ export const DetailScreen = ({ postId, onBack, isOffline }: DetailScreenProps) =
   const [confirmed, setConfirmed] = useState(false);
   const [resolved, setResolved] = useState(false);
   const [isKeyboardOpen, setIsKeyboardOpen] = useState(false);
+  const [showReport, setShowReport] = useState(false);
+  const [reportSuccess, setReportSuccess] = useState(false);
 
   if (!post) {
     return (
