@@ -2,7 +2,7 @@ import { useState, useRef } from "react";
 import { ArrowLeft, Search, SlidersHorizontal, Plus, X, Loader2 } from "lucide-react";
 import { mockPosts } from "@/data/mockData";
 import { PostCard } from "./PostCard";
-import { FilterModal, ContextMenu } from "./Overlays";
+import { FilterModal, ContextMenu, ReportModal, ReportSuccessToast } from "./Overlays";
 import type { ScreenState } from "@/pages/Index";
 
 interface FeedScreenProps {
@@ -27,6 +27,8 @@ export const FeedScreen = ({ onNavigate, isOffline, showToast }: FeedScreenProps
   const [isRefreshing, setIsRefreshing] = useState(false);
   const [contextMenu, setContextMenu] = useState<{ postId: string; isOwn: boolean } | null>(null);
   const [bannerDismissed, setBannerDismissed] = useState(false);
+  const [showReport, setShowReport] = useState(false);
+  const [reportSuccess, setReportSuccess] = useState(false);
   const scrollRef = useRef<HTMLDivElement>(null);
 
   const toggleFilter = (id: string) => {
@@ -121,7 +123,7 @@ export const FeedScreen = ({ onNavigate, isOffline, showToast }: FeedScreenProps
               onClick={() => toggleFilter(chip.id)}
               className={`px-3 py-1.5 rounded-full text-xs font-medium whitespace-nowrap flex-shrink-0 transition-colors duration-200 ${
                 activeFilters.includes(chip.id)
-                  ? 'bg-primary text-primary-foreground'
+                  ? 'bg-primary text-pgn-navy'
                   : 'bg-secondary text-secondary-foreground'
               }`}
             >
@@ -206,8 +208,19 @@ export const FeedScreen = ({ onNavigate, isOffline, showToast }: FeedScreenProps
         <ContextMenu
           isOwn={contextMenu.isOwn}
           onClose={() => setContextMenu(null)}
+          onReport={() => setShowReport(true)}
         />
       )}
+      {showReport && (
+        <ReportModal
+          onClose={() => setShowReport(false)}
+          onSubmit={() => {
+            setReportSuccess(true);
+            setTimeout(() => setReportSuccess(false), 2500);
+          }}
+        />
+      )}
+      <ReportSuccessToast visible={reportSuccess} />
     </div>
   );
 };

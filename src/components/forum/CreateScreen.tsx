@@ -275,12 +275,12 @@ export const CreateScreen = ({ onBack, isOffline }: CreateScreenProps) => {
                     onClick={() => setConditionType(type)}
                     className={`flex items-center gap-2.5 p-3.5 rounded-xl border-2 text-left transition-all active:scale-95 ${
                       isSelected
-                        ? 'border-primary bg-accent shadow-sm'
+                        ? 'border-pgn-navy bg-primary shadow-sm'
                         : 'border-border bg-card'
                     }`}
                   >
                     <span className="text-xl">{config.icon}</span>
-                    <span className={`text-sm font-medium ${isSelected ? 'text-primary' : 'text-foreground'}`}>{config.label}</span>
+                    <span className={`text-sm font-medium ${isSelected ? 'text-pgn-navy' : 'text-foreground'}`}>{config.label}</span>
                   </button>
                 );
               })}
@@ -302,11 +302,11 @@ export const CreateScreen = ({ onBack, isOffline }: CreateScreenProps) => {
                     key={sev}
                     onClick={() => setSeverity(sev)}
                     className={`w-full flex items-center gap-3 p-3.5 rounded-xl border-2 transition-all active:scale-[0.98] ${
-                      isSelected ? 'border-primary bg-accent' : 'border-border bg-card'
+                      isSelected ? 'border-pgn-navy bg-primary' : 'border-border bg-card'
                     }`}
                   >
                     <div className={`w-4 h-4 rounded-full ${config.dot}`} />
-                    <span className={`text-sm font-medium ${isSelected ? 'text-primary' : 'text-foreground'}`}>{config.fullLabel}</span>
+                    <span className={`text-sm font-medium ${isSelected ? 'text-pgn-navy' : 'text-foreground'}`}>{config.fullLabel}</span>
                   </button>
                 );
               })}
@@ -323,11 +323,11 @@ export const CreateScreen = ({ onBack, isOffline }: CreateScreenProps) => {
                     key={dir}
                     onClick={() => setDirection(dir)}
                     className={`p-2.5 rounded-xl border-2 text-center transition-all active:scale-95 ${
-                      isSelected ? 'border-primary bg-accent' : 'border-border bg-card'
+                      isSelected ? 'border-pgn-navy bg-primary' : 'border-border bg-card'
                     }`}
                   >
                     <span className="text-base">{config.icon || '❓'}</span>
-                    <p className={`text-[11px] font-medium mt-0.5 ${isSelected ? 'text-primary' : 'text-muted-foreground'}`}>
+                    <p className={`text-[11px] font-medium mt-0.5 ${isSelected ? 'text-pgn-navy' : 'text-muted-foreground'}`}>
                       {dir === 'na' ? 'N/A' : config.label.replace('bound', '')}
                     </p>
                   </button>

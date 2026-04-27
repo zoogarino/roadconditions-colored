@@ -2,7 +2,7 @@ import { useState } from "react";
 import { ArrowLeft, Share2, MoreVertical, Send, Check, MapPin } from "lucide-react";
 import { mockPosts, conditionConfig, severityConfig, directionConfig } from "@/data/mockData";
 import type { Reply } from "@/data/mockData";
-import { ShareSheet, ContextMenu } from "./Overlays";
+import { ShareSheet, ContextMenu, ReportModal, ReportSuccessToast } from "./Overlays";
 import type { ScreenState } from "@/pages/Index";
 
 interface DetailScreenProps {
@@ -52,6 +52,8 @@ export const DetailScreen = ({ postId, onBack, isOffline }: DetailScreenProps) =
   const [confirmed, setConfirmed] = useState(false);
   const [resolved, setResolved] = useState(false);
   const [isKeyboardOpen, setIsKeyboardOpen] = useState(false);
+  const [showReport, setShowReport] = useState(false);
+  const [reportSuccess, setReportSuccess] = useState(false);
 
   if (!post) {
     return (
@@ -220,7 +222,23 @@ export const DetailScreen = ({ postId, onBack, isOffline }: DetailScreenProps) =
 
       {/* Overlays */}
       {showShare && <ShareSheet onClose={() => setShowShare(false)} />}
-      {contextMenu && <ContextMenu isOwn={contextMenu.isOwn} onClose={() => setContextMenu(null)} />}
+      {contextMenu && (
+        <ContextMenu
+          isOwn={contextMenu.isOwn}
+          onClose={() => setContextMenu(null)}
+          onReport={() => setShowReport(true)}
+        />
+      )}
+      {showReport && (
+        <ReportModal
+          onClose={() => setShowReport(false)}
+          onSubmit={() => {
+            setReportSuccess(true);
+            setTimeout(() => setReportSuccess(false), 2500);
+          }}
+        />
+      )}
+      <ReportSuccessToast visible={reportSuccess} />
     </div>
   );
 };
