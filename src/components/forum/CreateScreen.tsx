@@ -275,12 +275,12 @@ export const CreateScreen = ({ onBack, isOffline }: CreateScreenProps) => {
                     onClick={() => setConditionType(type)}
                     className={`flex items-center gap-2.5 p-3.5 rounded-xl border-2 text-left transition-all active:scale-95 ${
                       isSelected
-                        ? 'border-primary bg-accent shadow-sm'
+                        ? 'border-pgn-navy bg-primary shadow-sm'
                         : 'border-border bg-card'
                     }`}
                   >
                     <span className="text-xl">{config.icon}</span>
-                    <span className={`text-sm font-medium ${isSelected ? 'text-primary' : 'text-foreground'}`}>{config.label}</span>
+                    <span className={`text-sm font-medium ${isSelected ? 'text-pgn-navy' : 'text-foreground'}`}>{config.label}</span>
                   </button>
                 );
               })}
