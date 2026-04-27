@@ -2,7 +2,7 @@ import { useState, useRef } from "react";
 import { ArrowLeft, Search, SlidersHorizontal, Plus, X, Loader2 } from "lucide-react";
 import { mockPosts } from "@/data/mockData";
 import { PostCard } from "./PostCard";
-import { FilterModal, ContextMenu } from "./Overlays";
+import { FilterModal, ContextMenu, ReportModal, ReportSuccessToast } from "./Overlays";
 import type { ScreenState } from "@/pages/Index";
 
 interface FeedScreenProps {
