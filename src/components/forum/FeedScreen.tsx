@@ -27,6 +27,8 @@ export const FeedScreen = ({ onNavigate, isOffline, showToast }: FeedScreenProps
   const [isRefreshing, setIsRefreshing] = useState(false);
   const [contextMenu, setContextMenu] = useState<{ postId: string; isOwn: boolean } | null>(null);
   const [bannerDismissed, setBannerDismissed] = useState(false);
+  const [showReport, setShowReport] = useState(false);
+  const [reportSuccess, setReportSuccess] = useState(false);
   const scrollRef = useRef<HTMLDivElement>(null);
 
   const toggleFilter = (id: string) => {
