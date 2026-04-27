@@ -2,7 +2,7 @@ import { useState } from "react";
 import { ArrowLeft, Share2, MoreVertical, Send, Check, MapPin } from "lucide-react";
 import { mockPosts, conditionConfig, severityConfig, directionConfig } from "@/data/mockData";
 import type { Reply } from "@/data/mockData";
-import { ShareSheet, ContextMenu } from "./Overlays";
+import { ShareSheet, ContextMenu, ReportModal, ReportSuccessToast } from "./Overlays";
 import type { ScreenState } from "@/pages/Index";
 
 interface DetailScreenProps {
