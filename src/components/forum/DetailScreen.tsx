@@ -222,7 +222,23 @@ export const DetailScreen = ({ postId, onBack, isOffline }: DetailScreenProps) =
 
       {/* Overlays */}
       {showShare && <ShareSheet onClose={() => setShowShare(false)} />}
-      {contextMenu && <ContextMenu isOwn={contextMenu.isOwn} onClose={() => setContextMenu(null)} />}
+      {contextMenu && (
+        <ContextMenu
+          isOwn={contextMenu.isOwn}
+          onClose={() => setContextMenu(null)}
+          onReport={() => setShowReport(true)}
+        />
+      )}
+      {showReport && (
+        <ReportModal
+          onClose={() => setShowReport(false)}
+          onSubmit={() => {
+            setReportSuccess(true);
+            setTimeout(() => setReportSuccess(false), 2500);
+          }}
+        />
+      )}
+      <ReportSuccessToast visible={reportSuccess} />
     </div>
   );
 };
