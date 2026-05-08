@@ -55,7 +55,7 @@ export const ShareSheet = ({ post, onClose }: { post?: Post; onClose: () => void
 
   const options = [
     { icon: '💬', label: 'WhatsApp', bg: '#25D366', source: 'whatsapp' },
-    { icon: '✉️', label: 'Messages', bg: '#29ABE2', source: 'messages' },
+    { icon: '✉️', label: 'Messages', bg: '#34C759', source: 'messages' },
     { icon: '🔗', label: 'Copy Link', bg: '#8B5E3C', source: 'copy' },
     { icon: '📸', label: 'Instagram', bg: '#E4405F', source: 'instagram' },
     { icon: '👤', label: 'Facebook', bg: '#1877F2', source: 'facebook' },
@@ -305,10 +305,12 @@ export const ContextMenu = ({
   isOwn,
   onClose,
   onReport,
+  onDelete,
 }: {
   isOwn: boolean;
   onClose: () => void;
   onReport?: () => void;
+  onDelete?: () => void;
 }) => (
   <Backdrop onClose={onClose}>
     <motion.div
@@ -323,7 +325,7 @@ export const ContextMenu = ({
         { key: 'share', icon: <Share2 size={18} />, label: 'Share', show: true, danger: false, onClick: onClose },
         { key: 'save', icon: <Bookmark size={18} />, label: 'Save for Later', show: true, danger: false, onClick: onClose },
         { key: 'report', icon: <Flag size={18} />, label: 'Report', show: true, danger: true, onClick: () => { onClose(); onReport?.(); } },
-        { key: 'delete', icon: <Trash2 size={18} />, label: 'Delete', show: isOwn, danger: true, onClick: onClose },
+        { key: 'delete', icon: <Trash2 size={18} />, label: 'Delete', show: isOwn, danger: true, onClick: () => { onClose(); onDelete?.(); } },
       ])
         .filter(item => item.show)
         .map(item => (
@@ -338,6 +340,42 @@ export const ContextMenu = ({
             {item.label}
           </button>
         ))}
+    </motion.div>
+  </Backdrop>
+);
+
+export const DeleteConfirmModal = ({
+  onCancel,
+  onConfirm,
+}: {
+  onCancel: () => void;
+  onConfirm: () => void;
+}) => (
+  <Backdrop onClose={onCancel}>
+    <motion.div
+      initial={{ opacity: 0, scale: 0.9 }}
+      animate={{ opacity: 1, scale: 1 }}
+      exit={{ opacity: 0, scale: 0.9 }}
+      transition={{ duration: 0.15 }}
+      className="absolute top-1/2 left-4 right-4 -translate-y-1/2 bg-card rounded-2xl p-5 z-50 shadow-xl"
+    >
+      <h3 className="font-semibold text-pgn-navy text-base mb-1">Delete this post?</h3>
+      <p className="text-sm text-muted-foreground mb-5">This action cannot be undone.</p>
+      <div className="flex gap-3">
+        <button
+          onClick={onCancel}
+          className="flex-1 py-3 rounded-xl text-sm font-medium bg-secondary text-foreground"
+        >
+          Cancel
+        </button>
+        <button
+          onClick={onConfirm}
+          className="flex-1 py-3 rounded-xl text-sm font-semibold text-white active:scale-[0.98] transition-transform"
+          style={{ backgroundColor: '#EF4444' }}
+        >
+          Delete
+        </button>
+      </div>
     </motion.div>
   </Backdrop>
 );
