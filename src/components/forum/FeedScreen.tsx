@@ -53,7 +53,7 @@ export const FeedScreen = ({ onNavigate, isOffline, showToast }: FeedScreenProps
   };
 
   // Tab filtering by lifecycle status (pinned posts always treated as active)
-  const tabPosts = mockPosts.filter(p => {
+  const tabPosts = mockPosts.filter(p => !deletedIds.includes(p.id)).filter(p => {
     if (p.isPinned) return tab === 'active' || tab === 'all';
     const status = computeStatus(p);
     if (tab === 'active') return status === 'active' || status === 'needs_confirmation';
@@ -249,6 +249,17 @@ export const FeedScreen = ({ onNavigate, isOffline, showToast }: FeedScreenProps
           isOwn={contextMenu.isOwn}
           onClose={() => setContextMenu(null)}
           onReport={() => setShowReport(true)}
+          onDelete={() => setDeleteTarget(contextMenu.postId)}
+        />
+      )}
+      {deleteTarget && (
+        <DeleteConfirmModal
+          onCancel={() => setDeleteTarget(null)}
+          onConfirm={() => {
+            setDeletedIds(ids => [...ids, deleteTarget]);
+            setDeleteTarget(null);
+            showToast('Post deleted', 'success');
+          }}
         />
       )}
       {showReport && (
