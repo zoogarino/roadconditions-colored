@@ -132,7 +132,24 @@ export const FeedScreen = ({ onNavigate, isOffline, showToast }: FeedScreenProps
         )}
       </div>
 
-      {/* Filters */}
+      {/* Lifecycle tabs */}
+      <div className="bg-card px-4 pt-2 border-b border-border">
+        <div className="flex items-center gap-1">
+          {(['active', 'resolved', 'all'] as const).map(t => (
+            <button
+              key={t}
+              onClick={() => setTab(t)}
+              className={`relative px-3 py-2 text-xs font-semibold capitalize transition-colors ${
+                tab === t ? 'text-pgn-navy' : 'text-muted-foreground'
+              }`}
+            >
+              {t}
+              {tab === t && <span className="absolute bottom-0 left-2 right-2 h-0.5 rounded-full bg-primary" />}
+            </button>
+          ))}
+        </div>
+      </div>
+
       <div className="bg-card px-4 py-2.5 border-b border-border">
         <div className="flex items-center gap-2 overflow-x-auto scrollbar-hide">
           <button
