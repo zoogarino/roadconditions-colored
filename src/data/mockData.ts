@@ -86,7 +86,7 @@ export const mockPosts: Post[] = [
     conditionType: 'sand',
     severity: 'moderate',
     direction: 'both',
-    description: 'The C34 experiences deep sand drifts during winter (May–August). 4x4 with high clearance required. Reduce tyre pressure to ~1.4 bar.',
+    description: 'The C34 between Solitaire and Sesriem experiences deep sand drifts during winter months (May-August). 4x4 with high clearance recommended.',
     author: { name: 'PGN Team', initials: 'PG', color: 'bg-pgn-blue' },
     timeAgo: 'Pinned',
     daysOld: 60,

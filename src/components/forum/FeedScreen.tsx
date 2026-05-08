@@ -50,8 +50,9 @@ export const FeedScreen = ({ onNavigate, isOffline, showToast }: FeedScreenProps
     setTimeout(() => setIsRefreshing(false), 1500);
   };
 
-  // Tab filtering by lifecycle status
+  // Tab filtering by lifecycle status (pinned posts always treated as active)
   const tabPosts = mockPosts.filter(p => {
+    if (p.isPinned) return tab === 'active' || tab === 'all';
     const status = computeStatus(p);
     if (tab === 'active') return status === 'active' || status === 'needs_confirmation';
     if (tab === 'resolved') return status === 'resolved';
