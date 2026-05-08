@@ -3,7 +3,7 @@ import { ArrowLeft, Search, SlidersHorizontal, Plus, X, Loader2 } from "lucide-r
 import { mockPosts } from "@/data/mockData";
 import { computeStatus, relevanceScore } from "@/lib/lifecycle";
 import { PostCard } from "./PostCard";
-import { FilterModal, ContextMenu, ReportModal, ReportSuccessToast } from "./Overlays";
+import { FilterModal, ContextMenu, ReportModal, ReportSuccessToast, DeleteConfirmModal } from "./Overlays";
 import type { ScreenState } from "@/pages/Index";
 
 interface FeedScreenProps {
@@ -32,6 +32,8 @@ export const FeedScreen = ({ onNavigate, isOffline, showToast }: FeedScreenProps
   const [bannerDismissed, setBannerDismissed] = useState(false);
   const [showReport, setShowReport] = useState(false);
   const [reportSuccess, setReportSuccess] = useState(false);
+  const [deleteTarget, setDeleteTarget] = useState<string | null>(null);
+  const [deletedIds, setDeletedIds] = useState<string[]>([]);
   const [tab, setTab] = useState<FeedTab>('active');
   const scrollRef = useRef<HTMLDivElement>(null);
 
@@ -51,7 +53,7 @@ export const FeedScreen = ({ onNavigate, isOffline, showToast }: FeedScreenProps
   };
 
   // Tab filtering by lifecycle status (pinned posts always treated as active)
-  const tabPosts = mockPosts.filter(p => {
+  const tabPosts = mockPosts.filter(p => !deletedIds.includes(p.id)).filter(p => {
     if (p.isPinned) return tab === 'active' || tab === 'all';
     const status = computeStatus(p);
     if (tab === 'active') return status === 'active' || status === 'needs_confirmation';
@@ -105,10 +107,6 @@ export const FeedScreen = ({ onNavigate, isOffline, showToast }: FeedScreenProps
             <button onClick={() => setShowSearch(!showSearch)} className="p-1">
               <Search size={20} className="text-pgn-blue" />
             </button>
-            <div className="relative">
-              <div className="w-5 h-5" />
-              <span className="absolute -top-1 -right-1 bg-destructive text-destructive-foreground text-[9px] rounded-full w-4 h-4 flex items-center justify-center font-bold leading-none">3</span>
-            </div>
           </div>
         </div>
 
@@ -251,6 +249,17 @@ export const FeedScreen = ({ onNavigate, isOffline, showToast }: FeedScreenProps
           isOwn={contextMenu.isOwn}
           onClose={() => setContextMenu(null)}
           onReport={() => setShowReport(true)}
+          onDelete={() => setDeleteTarget(contextMenu.postId)}
+        />
+      )}
+      {deleteTarget && (
+        <DeleteConfirmModal
+          onCancel={() => setDeleteTarget(null)}
+          onConfirm={() => {
+            setDeletedIds(ids => [...ids, deleteTarget]);
+            setDeleteTarget(null);
+            showToast('Post deleted', 'success');
+          }}
         />
       )}
       {showReport && (
