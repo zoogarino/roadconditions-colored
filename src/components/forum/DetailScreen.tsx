@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { motion, AnimatePresence } from "framer-motion";
 import { ArrowLeft, Share2, MoreVertical, Send, Check, MapPin, History } from "lucide-react";
 import { mockPosts, conditionConfig, severityConfig, directionConfig } from "@/data/mockData";
 import type { Reply } from "@/data/mockData";
@@ -151,52 +152,81 @@ export const DetailScreen = ({ postId, onNavigate, onBack, isOffline, showToast 
           </button>
         )}
 
-        {/* Needs-confirmation banner */}
-        {status === 'needs_confirmation' && !confirmedNow && !resolvedNow && (
-          <div className="mx-4 mt-3 rounded-xl p-3.5" style={{ backgroundColor: '#FFF4E6' }}>
-            <p className="text-xs font-semibold mb-1" style={{ color: '#8B5E3C' }}>
-              ⚠️ No recent updates ({post.daysOld} days old)
-            </p>
-            <p className="text-[11px] mb-3" style={{ color: '#8B5E3C' }}>Is this condition still active?</p>
-            <div className="flex gap-2">
-              <button
-                onClick={() => {
-                  setConfirmedNow(true);
-                  setExtraConfirms(c => c + 1);
-                  showToast?.('✓ Thanks for confirming! Post updated.', 'success');
-                }}
-                className="flex-1 py-2 bg-pgn-sand text-pgn-navy rounded-lg text-xs font-semibold active:scale-95 transition-transform"
-              >
-                <Check size={14} className="inline mr-1" /> Yes, still active
-              </button>
-              <button
-                onClick={() => {
-                  setResolvedNow(true);
-                  showToast?.('✓ Marked as resolved. Thanks for the update!', 'success');
-                }}
-                className="flex-1 py-2 text-white rounded-lg text-xs font-semibold active:scale-95 transition-transform"
-                style={{ backgroundColor: '#10B981' }}
-              >
-                <Check size={14} className="inline mr-1" /> Resolved
-              </button>
-            </div>
-            {totalConfirms > 0 && (
-              <p className="text-[11px] mt-3 font-medium text-minor">
-                ✓ {totalConfirms} traveler{totalConfirms === 1 ? '' : 's'} confirmed this is still an issue
-              </p>
-            )}
-          </div>
-        )}
-        {confirmedNow && (
-          <div className="mx-4 mt-3 bg-minor/10 border border-minor/30 rounded-xl p-3 text-center">
-            <p className="text-xs text-foreground">✓ Confirmed still active – thanks!</p>
-          </div>
-        )}
-        {resolvedNow && (
-          <div className="mx-4 mt-3 bg-minor/10 border border-minor/30 rounded-xl p-3 text-center">
-            <p className="text-xs text-foreground">✓ Marked as resolved – thanks!</p>
-          </div>
-        )}
+        {/* Needs-confirmation banner with slide-down animation */}
+        <AnimatePresence>
+          {status === 'needs_confirmation' && !confirmedNow && !resolvedNow && (
+            <motion.div
+              key="needs-confirm-banner"
+              initial={{ opacity: 0, y: -20, height: 0 }}
+              animate={{ opacity: 1, y: 0, height: 'auto' }}
+              exit={{ opacity: 0, height: 0, marginTop: 0 }}
+              transition={{ duration: 0.4, ease: 'easeOut' }}
+              className="mx-4 mt-3 overflow-hidden"
+            >
+              <div className="rounded-xl p-3.5" style={{ backgroundColor: '#FFF4E6' }}>
+                <p className="text-xs font-semibold mb-1" style={{ color: '#8B5E3C' }}>
+                  ⚠️ No recent updates ({post.daysOld} days old)
+                </p>
+                <p className="text-[11px] mb-3" style={{ color: '#8B5E3C' }}>Is this condition still active?</p>
+                <motion.div
+                  initial={{ opacity: 0, y: 12 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.25, delay: 0.2 }}
+                  className="flex gap-2"
+                >
+                  <button
+                    onClick={() => {
+                      setConfirmedNow(true);
+                      setExtraConfirms(c => c + 1);
+                      showToast?.('Thanks for confirming! Post updated.', 'success');
+                    }}
+                    className="flex-1 py-2 bg-pgn-sand text-pgn-navy rounded-lg text-xs font-semibold active:scale-95 transition-transform"
+                  >
+                    <Check size={14} className="inline mr-1" /> Yes, still active
+                  </button>
+                  <button
+                    onClick={() => {
+                      setResolvedNow(true);
+                      showToast?.('Marked as resolved. Thanks for the update!', 'success');
+                    }}
+                    className="flex-1 py-2 text-white rounded-lg text-xs font-semibold active:scale-95 transition-transform"
+                    style={{ backgroundColor: '#10B981' }}
+                  >
+                    <Check size={14} className="inline mr-1" /> Resolved
+                  </button>
+                </motion.div>
+                {totalConfirms > 0 && (
+                  <p className="text-[11px] mt-3 font-medium text-minor">
+                    ✓ {totalConfirms} traveler{totalConfirms === 1 ? '' : 's'} confirmed this is still an issue
+                  </p>
+                )}
+              </div>
+            </motion.div>
+          )}
+        </AnimatePresence>
+
+        <AnimatePresence>
+          {confirmedNow && (
+            <motion.div
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.3 }}
+              className="mx-4 mt-3 bg-minor/10 border border-minor/30 rounded-xl p-3 text-center"
+            >
+              <p className="text-xs text-foreground">✓ Confirmed still active – thanks!</p>
+            </motion.div>
+          )}
+          {resolvedNow && (
+            <motion.div
+              initial={{ opacity: 0, x: -30 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.3 }}
+              className="mx-4 mt-3 bg-minor/10 border border-minor/30 rounded-xl p-3 text-center"
+            >
+              <p className="text-xs text-foreground">✓ Marked as resolved – thanks!</p>
+            </motion.div>
+          )}
+        </AnimatePresence>
 
         {/* History link (always available when there is history) */}
         {getRoadHistory(mockPosts, post).length > 0 && !showRelated && (

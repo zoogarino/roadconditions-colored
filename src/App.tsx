@@ -8,6 +8,7 @@ import NotFound from "./pages/NotFound";
 import WebPostView from "./pages/WebPostView";
 import WhatsAppPreview from "./pages/previews/WhatsAppPreview";
 import FacebookPreview from "./pages/previews/FacebookPreview";
+import OGImagePreview from "./pages/previews/OGImagePreview";
 
 const queryClient = new QueryClient();
 
@@ -22,6 +23,7 @@ const App = () => (
           <Route path="/road-conditions/post/:id" element={<WebPostView />} />
           <Route path="/previews/whatsapp" element={<WhatsAppPreview />} />
           <Route path="/previews/facebook" element={<FacebookPreview />} />
+          <Route path="/previews/og-image" element={<OGImagePreview />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>
