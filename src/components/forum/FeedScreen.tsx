@@ -3,7 +3,7 @@ import { ArrowLeft, Search, SlidersHorizontal, Plus, X, Loader2 } from "lucide-r
 import { mockPosts } from "@/data/mockData";
 import { computeStatus, relevanceScore } from "@/lib/lifecycle";
 import { PostCard } from "./PostCard";
-import { FilterModal, ContextMenu, ReportModal, ReportSuccessToast } from "./Overlays";
+import { FilterModal, ContextMenu, ReportModal, ReportSuccessToast, DeleteConfirmModal } from "./Overlays";
 import type { ScreenState } from "@/pages/Index";
 
 interface FeedScreenProps {
@@ -32,6 +32,8 @@ export const FeedScreen = ({ onNavigate, isOffline, showToast }: FeedScreenProps
   const [bannerDismissed, setBannerDismissed] = useState(false);
   const [showReport, setShowReport] = useState(false);
   const [reportSuccess, setReportSuccess] = useState(false);
+  const [deleteTarget, setDeleteTarget] = useState<string | null>(null);
+  const [deletedIds, setDeletedIds] = useState<string[]>([]);
   const [tab, setTab] = useState<FeedTab>('active');
   const scrollRef = useRef<HTMLDivElement>(null);
 
