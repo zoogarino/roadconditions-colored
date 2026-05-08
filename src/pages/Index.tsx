@@ -18,13 +18,15 @@ const Index = () => {
   const [history, setHistory] = useState<ScreenState[]>([]);
   const [direction, setDirection] = useState(1);
   const [isOffline, setIsOffline] = useState(false);
-  const [toast, setToast] = useState<{ message: string; type: 'success' | 'warning' | 'info' } | null>(null);
+  const [toast, setToast] = useState<{ message: string; type: 'success' | 'warning' | 'info' | 'error' | 'progress' } | null>(null);
   const [isSyncing, setIsSyncing] = useState(false);
   const [syncProgress, setSyncProgress] = useState(0);
 
-  const showToast = useCallback((message: string, type: 'success' | 'warning' | 'info' = 'info') => {
+  const showToast = useCallback((message: string, type: 'success' | 'warning' | 'info' | 'error' | 'progress' = 'info') => {
     setToast({ message, type });
-    setTimeout(() => setToast(null), 3000);
+    if (type !== 'progress') {
+      setTimeout(() => setToast(prev => (prev?.message === message ? null : prev)), 2000);
+    }
   }, []);
 
   // Simulate sync when going back online
@@ -139,20 +141,38 @@ const Index = () => {
         <AnimatePresence>
           {toast && (
             <motion.div
-              initial={{ y: 80, opacity: 0 }}
+              key={toast.message}
+              initial={{ y: 30, opacity: 0 }}
               animate={{ y: 0, opacity: 1 }}
-              exit={{ y: 80, opacity: 0 }}
-              transition={{ type: 'spring', damping: 25, stiffness: 300 }}
-              className="absolute bottom-12 left-4 right-4 z-[60]"
+              exit={{ y: 30, opacity: 0 }}
+              transition={{ duration: 0.3, ease: 'easeOut' }}
+              drag="y"
+              dragConstraints={{ top: 0, bottom: 100 }}
+              dragElastic={0.2}
+              onDragEnd={(_, info) => { if (info.offset.y > 40) setToast(null); }}
+              onClick={() => setToast(null)}
+              className="absolute bottom-20 left-4 right-4 z-[60] cursor-pointer"
+              style={{ maxWidth: 400, marginLeft: 'auto', marginRight: 'auto' }}
             >
-              <div className={`rounded-xl px-4 py-3 shadow-lg text-sm font-medium text-center text-white ${
-                toast.type === 'success'
-                  ? 'bg-minor/95'
-                  : toast.type === 'warning'
-                  ? 'bg-primary/95'
-                  : 'bg-pgn-dark/95'
-              }`}>
-                {toast.message}
+              <div
+                className="rounded-xl px-4 py-3.5 shadow-[0_4px_12px_rgba(0,0,0,0.15)] text-[15px] font-medium text-white flex items-center gap-2.5"
+                style={{
+                  backgroundColor:
+                    toast.type === 'success' ? '#10B981' :
+                    toast.type === 'info'    ? '#29ABE2' :
+                    toast.type === 'warning' ? '#F59E0B' :
+                    toast.type === 'error'   ? '#EF4444' :
+                    /* progress */             '#D4854A',
+                }}
+              >
+                <span className="text-xl leading-none flex-shrink-0">
+                  {toast.type === 'success' ? '✓' :
+                   toast.type === 'info'    ? '✓' :
+                   toast.type === 'warning' ? '⚠️' :
+                   toast.type === 'error'   ? '✕' :
+                                              '⏳'}
+                </span>
+                <span className="flex-1">{toast.message.replace(/^[✓⚠️✕⏳📡✅📍]+\s*/, '')}</span>
               </div>
             </motion.div>
           )}
