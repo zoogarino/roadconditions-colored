@@ -5,6 +5,7 @@ import { FeedScreen } from "@/components/forum/FeedScreen";
 import { DetailScreen } from "@/components/forum/DetailScreen";
 import { CreateScreen } from "@/components/forum/CreateScreen";
 import { RoadHistoryScreen } from "@/components/forum/RoadHistoryScreen";
+import { DemoLinksMenu } from "@/components/DemoLinksMenu";
 
 export type ScreenState =
   | { type: 'feed' }
