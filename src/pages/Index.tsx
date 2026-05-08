@@ -5,6 +5,7 @@ import { FeedScreen } from "@/components/forum/FeedScreen";
 import { DetailScreen } from "@/components/forum/DetailScreen";
 import { CreateScreen } from "@/components/forum/CreateScreen";
 import { RoadHistoryScreen } from "@/components/forum/RoadHistoryScreen";
+import { DemoLinksMenu } from "@/components/DemoLinksMenu";
 
 export type ScreenState =
   | { type: 'feed' }
@@ -84,6 +85,7 @@ const Index = () => {
 
   return (
     <div className="min-h-screen bg-pgn-warm-border/40 flex items-center justify-center md:p-8">
+      <DemoLinksMenu />
       <div className="w-full md:w-[390px] md:h-[844px] md:rounded-[44px] md:shadow-2xl md:border-[10px] md:border-pgn-dark bg-background overflow-hidden relative flex flex-col min-h-screen md:min-h-0">
         {/* Notch */}
         <div className="hidden md:block absolute top-0 left-1/2 -translate-x-1/2 w-[120px] h-[28px] bg-pgn-dark rounded-b-[18px] z-50" />

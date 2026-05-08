@@ -1,0 +1,93 @@
+import { useState } from "react";
+import { FlaskConical, X, ExternalLink, Info } from "lucide-react";
+import { mockPosts } from "@/data/mockData";
+
+/**
+ * DemoLinksMenu
+ * ----------------------------------------------------------------
+ * DEV/PROTOTYPE ONLY — not part of the production app.
+ *
+ * This floating panel exposes routes that exist outside the main
+ * phone-frame mockup (web fallback view, social link previews) so
+ * stakeholders and developers can jump to them during walkthroughs.
+ *
+ * Remove this component (and its usage in `src/pages/Index.tsx`)
+ * before shipping to production.
+ */
+export const DemoLinksMenu = () => {
+  const [open, setOpen] = useState(false);
+  const samplePostId = mockPosts[0]?.id ?? "1";
+
+  const links = [
+    {
+      label: "Web fallback view",
+      desc: "Shared post landing page (non-app users)",
+      href: `/road-conditions/post/${samplePostId}`,
+    },
+    {
+      label: "WhatsApp link preview",
+      desc: "How the share appears in WhatsApp",
+      href: "/previews/whatsapp",
+    },
+    {
+      label: "Facebook link preview",
+      desc: "How the share appears in Facebook",
+      href: "/previews/facebook",
+    },
+  ];
+
+  return (
+    <div className="fixed bottom-4 left-4 z-[100] hidden md:block">
+      {open ? (
+        <div className="w-72 bg-card border border-pgn-warm-border rounded-xl shadow-2xl overflow-hidden">
+          <div className="flex items-center justify-between px-3 py-2 bg-pgn-navy text-white">
+            <div className="flex items-center gap-2">
+              <FlaskConical size={14} />
+              <span className="text-xs font-semibold">Demo Links</span>
+            </div>
+            <button onClick={() => setOpen(false)} aria-label="Close demo menu">
+              <X size={14} />
+            </button>
+          </div>
+
+          <div className="p-2 space-y-1">
+            {links.map((l) => (
+              <a
+                key={l.href}
+                href={l.href}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex items-start gap-2 px-2 py-2 rounded-lg hover:bg-pgn-warm-border/40 transition-colors group"
+              >
+                <ExternalLink size={14} className="text-pgn-blue mt-0.5 flex-shrink-0" />
+                <div className="flex-1 min-w-0">
+                  <p className="text-xs font-semibold text-pgn-navy leading-tight">{l.label}</p>
+                  <p className="text-[11px] text-foreground/60 leading-snug mt-0.5">{l.desc}</p>
+                </div>
+              </a>
+            ))}
+          </div>
+
+          <div className="px-3 py-2 bg-pgn-warm-border/30 border-t border-pgn-warm-border flex gap-2">
+            <Info size={12} className="text-foreground/60 mt-0.5 flex-shrink-0" />
+            <p className="text-[10px] text-foreground/70 leading-snug">
+              Dev note: this menu exists only for testing within the mockup. Remove
+              <code className="mx-1 px-1 bg-card rounded">DemoLinksMenu</code>
+              before production.
+            </p>
+          </div>
+        </div>
+      ) : (
+        <button
+          onClick={() => setOpen(true)}
+          className="flex items-center gap-2 bg-pgn-navy text-white px-3 py-2 rounded-full shadow-lg hover:opacity-90"
+        >
+          <FlaskConical size={14} />
+          <span className="text-xs font-semibold">Demo Links</span>
+        </button>
+      )}
+    </div>
+  );
+};
+
+export default DemoLinksMenu;
