@@ -22,6 +22,14 @@ const WebPostView = () => {
   return (
     <div className="min-h-screen bg-pgn-warm-border/40">
       <div className="mx-auto w-full max-w-[480px] bg-background min-h-screen pb-24 shadow-xl">
+        {/* Mobile browser chrome */}
+        <div className="bg-[#F5F5F5] h-14 flex items-center gap-2 px-3 border-b border-[#E4E6EB] sticky top-0 z-40">
+          <Lock size={12} className="text-[#3D3530]" />
+          <span className="text-[13px] text-[#3D3530] truncate flex-1">
+            pocketguidenamibia.com/road-conditions/post/{post.id}
+          </span>
+          <MoreVertical size={16} className="text-[#3D3530]" />
+        </div>
         {/* Website header */}
         <header className="bg-card border-b border-border px-4 py-3 flex items-center gap-3 sticky top-0 z-30">
           <div className="w-8 h-8 rounded-md bg-primary flex items-center justify-center text-white font-bold text-sm">
