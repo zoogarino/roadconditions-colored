@@ -105,10 +105,6 @@ export const FeedScreen = ({ onNavigate, isOffline, showToast }: FeedScreenProps
             <button onClick={() => setShowSearch(!showSearch)} className="p-1">
               <Search size={20} className="text-pgn-blue" />
             </button>
-            <div className="relative">
-              <div className="w-5 h-5" />
-              <span className="absolute -top-1 -right-1 bg-destructive text-destructive-foreground text-[9px] rounded-full w-4 h-4 flex items-center justify-center font-bold leading-none">3</span>
-            </div>
           </div>
         </div>
 
