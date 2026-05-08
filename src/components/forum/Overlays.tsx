@@ -1,6 +1,9 @@
 import { useState } from "react";
-import { X, Share2, Flag, Trash2, Bookmark, Check } from "lucide-react";
+import { X, Share2, Flag, Trash2, Bookmark, Check, MapPin, Eye } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
+import type { Post } from "@/data/mockData";
+import { conditionConfig, severityConfig } from "@/data/mockData";
+import { buildShareText, buildShareUrl, SHARE_BASE } from "@/lib/share";
 
 const Backdrop = ({ onClose, children }: { onClose: () => void; children: React.ReactNode }) => (
   <div className="absolute inset-0 z-50">
@@ -9,15 +12,72 @@ const Backdrop = ({ onClose, children }: { onClose: () => void; children: React.
   </div>
 );
 
-export const ShareSheet = ({ onClose }: { onClose: () => void }) => {
-  // Brand colors per spec
+const severityEmoji: Record<string, string> = { severe: '🔴', moderate: '🟡', minor: '🟢' };
+
+const LinkPreviewCard = ({ post, variant }: { post: Post; variant: 'whatsapp' | 'facebook' }) => {
+  const cond = conditionConfig[post.conditionType];
+  const sev = severityConfig[post.severity];
+  const title = `${post.road} - ${sev.label} ${cond.label}`;
+  const desc = post.description.length > 110 ? post.description.slice(0, 107) + '...' : post.description;
+
+  if (variant === 'whatsapp') {
+    return (
+      <div className="rounded-lg overflow-hidden border border-border bg-white shadow-sm">
+        <div className="h-20 bg-gradient-to-br from-accent to-secondary flex items-center justify-center">
+          <MapPin size={20} className="text-primary" />
+        </div>
+        <div className="p-2.5">
+          <p className="text-[11px] font-semibold text-pgn-navy leading-tight line-clamp-2">{title}</p>
+          <p className="text-[10px] text-muted-foreground mt-1 line-clamp-2">{desc}</p>
+          <p className="text-[9px] text-muted-foreground uppercase tracking-wider mt-1.5">pocketguidenamibia.com</p>
+        </div>
+      </div>
+    );
+  }
+  // Facebook
+  return (
+    <div className="rounded-lg overflow-hidden border border-border bg-white">
+      <div className="h-24 bg-gradient-to-br from-accent to-secondary flex items-center justify-center">
+        <MapPin size={24} className="text-primary" />
+      </div>
+      <div className="p-2.5 bg-secondary/50">
+        <p className="text-[9px] text-muted-foreground uppercase tracking-wider">pocketguidenamibia.com</p>
+        <p className="text-[12px] font-semibold text-pgn-navy leading-tight mt-0.5">{title}</p>
+        <p className="text-[10px] text-muted-foreground mt-1 line-clamp-2">{desc}</p>
+      </div>
+    </div>
+  );
+};
+
+export const ShareSheet = ({ post, onClose }: { post?: Post; onClose: () => void }) => {
+  const [copied, setCopied] = useState(false);
+  const [previewMode, setPreviewMode] = useState<null | 'whatsapp' | 'facebook'>(null);
+
   const options = [
-    { icon: '💬', label: 'WhatsApp', bg: '#25D366' },
-    { icon: '✉️', label: 'Messages', bg: '#29ABE2' },
-    { icon: '🔗', label: 'Copy Link', bg: '#8B5E3C' },
-    { icon: '📸', label: 'Instagram', bg: '#E4405F' },
-    { icon: '👤', label: 'Facebook', bg: '#1877F2' },
+    { icon: '💬', label: 'WhatsApp', bg: '#25D366', source: 'whatsapp' },
+    { icon: '✉️', label: 'Messages', bg: '#29ABE2', source: 'messages' },
+    { icon: '🔗', label: 'Copy Link', bg: '#8B5E3C', source: 'copy' },
+    { icon: '📸', label: 'Instagram', bg: '#E4405F', source: 'instagram' },
+    { icon: '👤', label: 'Facebook', bg: '#1877F2', source: 'facebook' },
   ];
+
+  const handleSelect = async (source: string) => {
+    if (!post) { onClose(); return; }
+    const url = buildShareUrl(post.id, source);
+    const text = buildShareText(post, source);
+    try {
+      if (source === 'copy') {
+        await navigator.clipboard.writeText(url);
+      } else {
+        await navigator.clipboard.writeText(text);
+      }
+      setCopied(true);
+      setTimeout(() => { setCopied(false); onClose(); }, 1400);
+    } catch {
+      setCopied(true);
+      setTimeout(() => { setCopied(false); onClose(); }, 1400);
+    }
+  };
 
   return (
     <Backdrop onClose={onClose}>
@@ -26,16 +86,21 @@ export const ShareSheet = ({ onClose }: { onClose: () => void }) => {
         animate={{ y: 0 }}
         exit={{ y: '100%' }}
         transition={{ type: 'spring', damping: 25, stiffness: 300 }}
-        className="absolute bottom-0 left-0 right-0 bg-card rounded-t-2xl p-5 z-50"
+        className="absolute bottom-0 left-0 right-0 bg-card rounded-t-2xl p-5 z-50 max-h-[85%] overflow-y-auto scrollbar-hide"
       >
         <div className="w-10 h-1 bg-border rounded-full mx-auto mb-4" />
-        <div className="flex items-center justify-between mb-5">
+        <div className="flex items-center justify-between mb-4">
           <h3 className="font-semibold text-foreground">Share</h3>
           <button onClick={onClose}><X size={20} className="text-muted-foreground" /></button>
         </div>
-        <div className="grid grid-cols-5 gap-3 text-center">
+
+        <div className="grid grid-cols-5 gap-3 text-center mb-4">
           {options.map(opt => (
-            <button key={opt.label} className="flex flex-col items-center gap-2 active:scale-90 transition-transform">
+            <button
+              key={opt.label}
+              onClick={() => handleSelect(opt.source)}
+              className="flex flex-col items-center gap-2 active:scale-90 transition-transform"
+            >
               <div
                 className="w-12 h-12 rounded-full flex items-center justify-center text-xl text-white shadow-sm"
                 style={{ backgroundColor: opt.bg }}
@@ -46,7 +111,76 @@ export const ShareSheet = ({ onClose }: { onClose: () => void }) => {
             </button>
           ))}
         </div>
+
+        {post && (
+          <>
+            {/* Formatted share text preview */}
+            <div className="bg-secondary/60 border border-border rounded-lg p-3 mb-3">
+              <p className="text-[10px] font-semibold text-muted-foreground uppercase tracking-wider mb-1.5">Message preview</p>
+              <pre className="text-[11px] text-foreground/85 whitespace-pre-wrap font-sans leading-relaxed">
+{`${post.road} - ${severityConfig[post.severity].label} ${conditionConfig[post.conditionType].label} ${severityEmoji[post.severity] ?? ''}
+${post.description.length > 150 ? post.description.slice(0,147)+'...' : post.description}
+
+Check latest reports:
+${SHARE_BASE}/${post.id}`}
+              </pre>
+            </div>
+
+            {/* Link preview tabs */}
+            <div className="flex items-center gap-2 mb-2">
+              <Eye size={12} className="text-muted-foreground" />
+              <span className="text-[10px] font-semibold text-muted-foreground uppercase tracking-wider">Link preview</span>
+              <div className="ml-auto flex gap-1">
+                {(['whatsapp','facebook'] as const).map(v => (
+                  <button
+                    key={v}
+                    onClick={() => setPreviewMode(previewMode === v ? null : v)}
+                    className={`px-2 py-0.5 rounded-full text-[10px] font-medium ${
+                      previewMode === v ? 'bg-primary text-pgn-navy' : 'bg-secondary text-muted-foreground'
+                    }`}
+                  >
+                    {v === 'whatsapp' ? 'WhatsApp' : 'Facebook'}
+                  </button>
+                ))}
+              </div>
+            </div>
+            <AnimatePresence initial={false}>
+              {previewMode && (
+                <motion.div
+                  initial={{ opacity: 0, height: 0 }}
+                  animate={{ opacity: 1, height: 'auto' }}
+                  exit={{ opacity: 0, height: 0 }}
+                  className="overflow-hidden"
+                >
+                  <div className="pt-1 pb-1">
+                    <LinkPreviewCard post={post} variant={previewMode} />
+                  </div>
+                </motion.div>
+              )}
+            </AnimatePresence>
+          </>
+        )}
       </motion.div>
+
+      {/* Copied toast */}
+      <AnimatePresence>
+        {copied && (
+          <motion.div
+            initial={{ y: 80, opacity: 0 }}
+            animate={{ y: 0, opacity: 1 }}
+            exit={{ y: 80, opacity: 0 }}
+            className="absolute bottom-12 left-4 right-4 z-[80]"
+          >
+            <div
+              className="rounded-xl px-4 py-3 shadow-lg text-sm font-medium text-center text-white flex items-center justify-center gap-2"
+              style={{ backgroundColor: '#10B981' }}
+            >
+              <Check size={16} strokeWidth={3} />
+              Link copied!
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </Backdrop>
   );
 };
