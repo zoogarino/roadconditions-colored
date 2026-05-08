@@ -43,6 +43,8 @@ export interface Post {
   pinnedBy?: string;
   pinnedSummary?: string;
   pinnedSeasonalUpdates?: number;
+  pinnedTitle?: string;
+  pinnedMiniReplies?: { name: string; timeAgo: string; content: string }[];
   replies: Reply[];
 }
 
@@ -92,8 +94,13 @@ export const mockPosts: Post[] = [
     status: 'active',
     isPinned: true,
     pinnedBy: 'PGN Team',
+    pinnedTitle: 'C34 Seasonal Sand Conditions',
     pinnedSummary: 'Sarah K. • 2 days ago — Sand very deep at km 78. Deflated to 1.2 bar.',
     pinnedSeasonalUpdates: 23,
+    pinnedMiniReplies: [
+      { name: 'Sarah K.', timeAgo: '2 days ago', content: 'Sand very deep at km 78. Deflated to 1.2 bar.' },
+      { name: 'Mike T.', timeAgo: '1 week ago', content: 'Passable but slow going. Took 90 minutes extra.' },
+    ],
     replies: [],
   },
   {
