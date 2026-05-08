@@ -117,8 +117,10 @@ export const PostCard = ({ post, onTap, onLongPress }: PostCardProps) => {
             <span className="flex items-center gap-1">
               <MessageCircle size={12} /> {post.replyCount}
             </span>
-            <span className="flex items-center gap-1">
-              <Clock size={12} /> {post.timeAgo}
+            <span className={`flex items-center gap-1 ${status === 'resolved' ? 'text-minor font-semibold' : ''}`}>
+              <Clock size={12} /> {status === 'resolved' && post.resolvedDaysAgo != null
+                ? `Resolved ${post.resolvedDaysAgo === 1 ? '1 day' : post.resolvedDaysAgo < 7 ? `${post.resolvedDaysAgo} days` : post.resolvedDaysAgo < 14 ? '1 week' : `${Math.floor(post.resolvedDaysAgo/7)} weeks`} ago`
+                : post.timeAgo}
             </span>
           </div>
         </div>
