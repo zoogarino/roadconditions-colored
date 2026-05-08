@@ -1,6 +1,7 @@
 export type ConditionType = 'flooding' | 'construction' | 'accident' | 'closed' | 'potholes' | 'wildlife' | 'sand' | 'other';
 export type Severity = 'severe' | 'moderate' | 'minor';
 export type Direction = 'north' | 'south' | 'east' | 'west' | 'both' | 'na';
+export type PostStatus = 'active' | 'needs_confirmation' | 'resolved' | 'archived';
 
 export interface Author {
   name: string;
@@ -19,6 +20,8 @@ export interface Reply {
 export interface Post {
   id: string;
   road: string;
+  /** Normalized road key used to group history (e.g. "C38") */
+  roadKey?: string;
   location: string;
   conditionType: ConditionType;
   severity: Severity;
@@ -26,9 +29,20 @@ export interface Post {
   description: string;
   author: Author;
   timeAgo: string;
+  /** Days since the post was created (used by lifecycle logic). */
+  daysOld: number;
   replyCount: number;
   isPending?: boolean;
   isStale?: boolean;
+  status?: PostStatus;
+  confirmations?: number;
+  /** When status === 'resolved': how many days ago it was resolved. */
+  resolvedDaysAgo?: number;
+  /** Pinned reference post (admin/PGN team). */
+  isPinned?: boolean;
+  pinnedBy?: string;
+  pinnedSummary?: string;
+  pinnedSeasonalUpdates?: number;
   replies: Reply[];
 }
 
@@ -61,9 +75,31 @@ export const directionConfig: Record<Direction, { label: string; icon: string }>
 export const conditionTypes: ConditionType[] = ['flooding', 'construction', 'accident', 'closed', 'potholes', 'wildlife', 'sand', 'other'];
 
 export const mockPosts: Post[] = [
+  // Pinned reference post (PGN Team)
+  {
+    id: 'pin-c34',
+    road: 'C34 Seasonal Sand Conditions',
+    roadKey: 'C34',
+    location: 'Skeleton Coast route',
+    conditionType: 'sand',
+    severity: 'moderate',
+    direction: 'both',
+    description: 'The C34 experiences deep sand drifts during winter (May–August). 4x4 with high clearance required. Reduce tyre pressure to ~1.4 bar.',
+    author: { name: 'PGN Team', initials: 'PG', color: 'bg-pgn-blue' },
+    timeAgo: 'Pinned',
+    daysOld: 60,
+    replyCount: 23,
+    status: 'active',
+    isPinned: true,
+    pinnedBy: 'PGN Team',
+    pinnedSummary: 'Sarah K. • 2 days ago — Sand very deep at km 78. Deflated to 1.2 bar.',
+    pinnedSeasonalUpdates: 23,
+    replies: [],
+  },
   {
     id: '1',
     road: 'C38 near Okaukuejo',
+    roadKey: 'C38',
     location: 'Etosha National Park',
     conditionType: 'flooding',
     severity: 'severe',
@@ -71,8 +107,10 @@ export const mockPosts: Post[] = [
     description: 'Heavy rains between Okaukuejo and Halali. Road completely washed away at the riverbed crossing. 4x4 vehicles stuck, recovery team called. Avoid this section entirely.',
     author: { name: 'Gerd Byron', initials: 'GB', color: 'bg-blue-500' },
     timeAgo: '2 days ago',
+    daysOld: 2,
     replyCount: 5,
-    isStale: false,
+    status: 'active',
+    confirmations: 0,
     replies: [
       {
         id: 'r1',
@@ -105,6 +143,7 @@ export const mockPosts: Post[] = [
   {
     id: '2',
     road: 'B2 at Karibib',
+    roadKey: 'B2',
     location: 'Windhoek to Swakopmund',
     conditionType: 'construction',
     severity: 'moderate',
@@ -112,7 +151,9 @@ export const mockPosts: Post[] = [
     description: 'Road work delays of approximately 20 minutes. Single lane traffic with stop-go control. Expected to continue until end of March.',
     author: { name: 'Anna Mueller', initials: 'AM', color: 'bg-teal-500' },
     timeAgo: '5 hours ago',
+    daysOld: 0,
     replyCount: 2,
+    status: 'active',
     replies: [
       {
         id: 'r4',
@@ -125,15 +166,19 @@ export const mockPosts: Post[] = [
   {
     id: '3',
     road: 'D826 Sossusvlei entrance',
+    roadKey: 'D826',
     location: 'Namib-Naukluft Park',
     conditionType: 'sand',
     severity: 'minor',
     direction: 'both',
     description: 'Sand drifts across the road near the Sesriem canyon turnoff. All vehicles can pass but reduce speed. Beautiful driving conditions otherwise.',
     author: { name: 'Hans Becker', initials: 'HB', color: 'bg-amber-600' },
-    timeAgo: '1 week ago',
+    timeAgo: '9 days ago',
+    daysOld: 9,
     replyCount: 8,
     isStale: true,
+    status: 'needs_confirmation',
+    confirmations: 2,
     replies: [
       {
         id: 'r5',
@@ -146,6 +191,7 @@ export const mockPosts: Post[] = [
   {
     id: '4',
     road: 'B1 Windhoek–Okahandja',
+    roadKey: 'B1',
     location: 'Central Namibia',
     conditionType: 'potholes',
     severity: 'moderate',
@@ -153,12 +199,15 @@ export const mockPosts: Post[] = [
     description: 'Multiple potholes on the northbound lane between Brakwater and Okahandja. Particularly bad near the Elephant Junction turnoff.',
     author: { name: 'David Nghimtina', initials: 'DN', color: 'bg-cyan-600' },
     timeAgo: '3 days ago',
+    daysOld: 3,
     replyCount: 1,
+    status: 'active',
     replies: [],
   },
   {
     id: '5',
     road: 'D3901 Sesriem',
+    roadKey: 'D3901',
     location: 'Southern Namibia',
     conditionType: 'closed',
     severity: 'severe',
@@ -166,12 +215,15 @@ export const mockPosts: Post[] = [
     description: 'Road completely closed due to flash flooding. No vehicles can pass. NamWater has placed barriers. Use C27 as alternative.',
     author: { name: 'René Joubert', initials: 'RJ', color: 'bg-red-500' },
     timeAgo: '6 hours ago',
+    daysOld: 0,
     replyCount: 0,
+    status: 'active',
     replies: [],
   },
   {
     id: '6',
     road: 'C27 near Solitaire',
+    roadKey: 'C27',
     location: 'Central Namib',
     conditionType: 'wildlife',
     severity: 'minor',
@@ -179,7 +231,9 @@ export const mockPosts: Post[] = [
     description: 'Large herd of oryx crossing the road regularly near Solitaire bakery turnoff. Drive carefully, especially at dawn and dusk.',
     author: { name: 'Katja Brandt', initials: 'KB', color: 'bg-green-600' },
     timeAgo: '4 days ago',
+    daysOld: 4,
     replyCount: 3,
+    status: 'active',
     replies: [
       {
         id: 'r6',
@@ -192,6 +246,7 @@ export const mockPosts: Post[] = [
   {
     id: '7',
     road: 'D707 Fish River',
+    roadKey: 'D707',
     location: 'Southern Namibia',
     conditionType: 'construction',
     severity: 'moderate',
@@ -199,22 +254,28 @@ export const mockPosts: Post[] = [
     description: 'Bridge repairs underway. One-lane traffic over temporary bridge. Flagmen controlling traffic flow.',
     author: { name: 'You', initials: 'ME', color: 'bg-primary' },
     timeAgo: 'Just now',
+    daysOld: 0,
     replyCount: 0,
     isPending: true,
+    status: 'active',
     replies: [],
   },
   {
     id: '8',
     road: 'C35 Etosha eastern gate',
+    roadKey: 'C35',
     location: 'Namutoni, Etosha',
     conditionType: 'flooding',
     severity: 'moderate',
     direction: 'west',
     description: 'Standing water on road between Von Lindequist Gate and Namutoni camp. 4x4 recommended but 2WD can pass slowly.',
     author: { name: 'Frieda Shikongo', initials: 'FS', color: 'bg-violet-500' },
-    timeAgo: '8 days ago',
+    timeAgo: '12 days ago',
+    daysOld: 12,
     replyCount: 4,
     isStale: true,
+    status: 'needs_confirmation',
+    confirmations: 0,
     replies: [
       {
         id: 'r7',
@@ -231,6 +292,58 @@ export const mockPosts: Post[] = [
         ],
       },
     ],
+  },
+  // Resolved posts (for Resolved tab + road history)
+  {
+    id: 'res-1',
+    road: 'C38 near Okaukuejo',
+    roadKey: 'C38',
+    location: 'Etosha National Park',
+    conditionType: 'flooding',
+    severity: 'severe',
+    direction: 'both',
+    description: 'Earlier flooding event from March rains. Road was impassable for ~13 days then cleared by Parks Board.',
+    author: { name: 'Lisa van der Berg', initials: 'LV', color: 'bg-pink-500' },
+    timeAgo: 'Resolved 3 days ago',
+    daysOld: 16,
+    replyCount: 8,
+    status: 'resolved',
+    resolvedDaysAgo: 3,
+    replies: [],
+  },
+  {
+    id: 'res-2',
+    road: 'B2 at Usakos',
+    roadKey: 'B2',
+    location: 'Erongo region',
+    conditionType: 'accident',
+    severity: 'moderate',
+    direction: 'both',
+    description: 'Tanker accident cleared. Road fully reopened.',
+    author: { name: 'Peter Schultz', initials: 'PS', color: 'bg-indigo-500' },
+    timeAgo: 'Resolved 6 days ago',
+    daysOld: 9,
+    replyCount: 4,
+    status: 'resolved',
+    resolvedDaysAgo: 6,
+    replies: [],
+  },
+  // Archived posts (for All tab + road history)
+  {
+    id: 'arc-1',
+    road: 'C38 near Okaukuejo',
+    roadKey: 'C38',
+    location: 'Etosha National Park',
+    conditionType: 'flooding',
+    severity: 'minor',
+    direction: 'both',
+    description: 'Brief flooding in January, cleared on its own within 2 days.',
+    author: { name: 'Hans Becker', initials: 'HB', color: 'bg-amber-600' },
+    timeAgo: '18 days ago',
+    daysOld: 18,
+    replyCount: 3,
+    status: 'archived',
+    replies: [],
   },
 ];
 

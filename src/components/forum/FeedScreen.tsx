@@ -1,6 +1,7 @@
 import { useState, useRef } from "react";
 import { ArrowLeft, Search, SlidersHorizontal, Plus, X, Loader2 } from "lucide-react";
 import { mockPosts } from "@/data/mockData";
+import { computeStatus, relevanceScore } from "@/lib/lifecycle";
 import { PostCard } from "./PostCard";
 import { FilterModal, ContextMenu, ReportModal, ReportSuccessToast } from "./Overlays";
 import type { ScreenState } from "@/pages/Index";
@@ -19,6 +20,8 @@ const filterChips = [
   { id: 'active', icon: '💬', label: 'Active' },
 ];
 
+type FeedTab = 'active' | 'resolved' | 'all';
+
 export const FeedScreen = ({ onNavigate, isOffline, showToast }: FeedScreenProps) => {
   const [activeFilters, setActiveFilters] = useState<string[]>([]);
   const [showFilter, setShowFilter] = useState(false);
@@ -29,6 +32,7 @@ export const FeedScreen = ({ onNavigate, isOffline, showToast }: FeedScreenProps
   const [bannerDismissed, setBannerDismissed] = useState(false);
   const [showReport, setShowReport] = useState(false);
   const [reportSuccess, setReportSuccess] = useState(false);
+  const [tab, setTab] = useState<FeedTab>('active');
   const scrollRef = useRef<HTMLDivElement>(null);
 
   const toggleFilter = (id: string) => {
@@ -46,10 +50,30 @@ export const FeedScreen = ({ onNavigate, isOffline, showToast }: FeedScreenProps
     setTimeout(() => setIsRefreshing(false), 1500);
   };
 
-  const filteredPosts = mockPosts.filter(p =>
+  // Tab filtering by lifecycle status
+  const tabPosts = mockPosts.filter(p => {
+    const status = computeStatus(p);
+    if (tab === 'active') return status === 'active' || status === 'needs_confirmation';
+    if (tab === 'resolved') return status === 'resolved';
+    return true; // all
+  });
+
+  const searchFiltered = tabPosts.filter(p =>
     !searchQuery || p.road.toLowerCase().includes(searchQuery.toLowerCase()) ||
     p.location.toLowerCase().includes(searchQuery.toLowerCase())
   );
+
+  // Pinned posts always pinned to top of Active tab; otherwise interleave normally
+  const pinned = tab === 'active' ? searchFiltered.filter(p => p.isPinned) : [];
+  const unpinned = searchFiltered.filter(p => !p.isPinned);
+
+  const sortedUnpinned = [...unpinned].sort((a, b) => {
+    if (tab === 'resolved') return (a.resolvedDaysAgo ?? 0) - (b.resolvedDaysAgo ?? 0);
+    if (tab === 'all') return (a.daysOld ?? 0) - (b.daysOld ?? 0);
+    return relevanceScore(b) - relevanceScore(a);
+  });
+
+  const filteredPosts = [...pinned, ...sortedUnpinned];
 
   return (
     <div className="h-full flex flex-col relative bg-background">
@@ -108,7 +132,24 @@ export const FeedScreen = ({ onNavigate, isOffline, showToast }: FeedScreenProps
         )}
       </div>
 
-      {/* Filters */}
+      {/* Lifecycle tabs */}
+      <div className="bg-card px-4 pt-2 border-b border-border">
+        <div className="flex items-center gap-1">
+          {(['active', 'resolved', 'all'] as const).map(t => (
+            <button
+              key={t}
+              onClick={() => setTab(t)}
+              className={`relative px-3 py-2 text-xs font-semibold capitalize transition-colors ${
+                tab === t ? 'text-pgn-navy' : 'text-muted-foreground'
+              }`}
+            >
+              {t}
+              {tab === t && <span className="absolute bottom-0 left-2 right-2 h-0.5 rounded-full bg-primary" />}
+            </button>
+          ))}
+        </div>
+      </div>
+
       <div className="bg-card px-4 py-2.5 border-b border-border">
         <div className="flex items-center gap-2 overflow-x-auto scrollbar-hide">
           <button

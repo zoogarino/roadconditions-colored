@@ -1,8 +1,9 @@
 import { useState } from "react";
-import { ArrowLeft, Share2, MoreVertical, Send, Check, MapPin } from "lucide-react";
+import { ArrowLeft, Share2, MoreVertical, Send, Check, MapPin, History } from "lucide-react";
 import { mockPosts, conditionConfig, severityConfig, directionConfig } from "@/data/mockData";
 import type { Reply } from "@/data/mockData";
 import { ShareSheet, ContextMenu, ReportModal, ReportSuccessToast } from "./Overlays";
+import { computeStatus, getRoadHistory, hasRelatedHistory } from "@/lib/lifecycle";
 import type { ScreenState } from "@/pages/Index";
 
 interface DetailScreenProps {
@@ -10,6 +11,7 @@ interface DetailScreenProps {
   onNavigate: (s: ScreenState) => void;
   onBack: () => void;
   isOffline: boolean;
+  showToast?: (msg: string, type?: 'success' | 'warning' | 'info') => void;
 }
 
 const ReplyCard = ({ reply, isThreaded, onLongPress, onReply }: {
@@ -44,13 +46,14 @@ const ReplyCard = ({ reply, isThreaded, onLongPress, onReply }: {
   );
 };
 
-export const DetailScreen = ({ postId, onBack, isOffline }: DetailScreenProps) => {
+export const DetailScreen = ({ postId, onNavigate, onBack, isOffline, showToast }: DetailScreenProps) => {
   const post = mockPosts.find(p => p.id === postId);
   const [replyText, setReplyText] = useState('');
   const [showShare, setShowShare] = useState(false);
   const [contextMenu, setContextMenu] = useState<{ isOwn: boolean } | null>(null);
-  const [confirmed, setConfirmed] = useState(false);
-  const [resolved, setResolved] = useState(false);
+  const [confirmedNow, setConfirmedNow] = useState(false);
+  const [resolvedNow, setResolvedNow] = useState(false);
+  const [extraConfirms, setExtraConfirms] = useState(0);
   const [isKeyboardOpen, setIsKeyboardOpen] = useState(false);
   const [showReport, setShowReport] = useState(false);
   const [reportSuccess, setReportSuccess] = useState(false);
@@ -69,6 +72,11 @@ export const DetailScreen = ({ postId, onBack, isOffline }: DetailScreenProps) =
   const condition = conditionConfig[post.conditionType];
   const severity = severityConfig[post.severity];
   const direction = directionConfig[post.direction];
+  const baseStatus = computeStatus(post);
+  const status = resolvedNow ? 'resolved' : confirmedNow ? 'active' : baseStatus;
+  const totalConfirms = (post.confirmations ?? 0) + extraConfirms;
+  const showRelated = hasRelatedHistory(mockPosts, post);
+  const lastRelated = getRoadHistory(mockPosts, post).find(p => p.status === 'resolved');
 
   return (
     <div className="h-full flex flex-col relative bg-background">
@@ -127,30 +135,77 @@ export const DetailScreen = ({ postId, onBack, isOffline }: DetailScreenProps) =
           </div>
         </div>
 
-        {/* Stale warning */}
-        {post.isStale && !confirmed && !resolved && (
-          <div className="mx-4 mt-3 bg-moderate/10 border border-moderate/30 rounded-xl p-3.5">
-            <p className="text-xs font-semibold text-foreground mb-1">⚠️ No recent updates ({post.timeAgo})</p>
-            <p className="text-[11px] text-muted-foreground mb-3">Is this condition still active?</p>
+        {/* Related history banner */}
+        {showRelated && (
+          <button
+            onClick={() => onNavigate({ type: 'history', road: post.road })}
+            className="mx-4 mt-3 w-[calc(100%-2rem)] bg-pgn-sand border border-pgn-warm-border rounded-xl p-3.5 text-left active:scale-[0.99] transition-transform"
+          >
+            <p className="text-xs font-semibold text-pgn-warm-brown">⚠️ This location has flooded before</p>
+            {lastRelated && (
+              <p className="text-[11px] text-pgn-warm-brown/80 mt-0.5">
+                Last report: {lastRelated.daysOld - (lastRelated.resolvedDaysAgo ?? 0)} days ago (resolved)
+              </p>
+            )}
+            <p className="text-[11px] font-semibold text-pgn-blue mt-1">View road history →</p>
+          </button>
+        )}
+
+        {/* Needs-confirmation banner */}
+        {status === 'needs_confirmation' && !confirmedNow && !resolvedNow && (
+          <div className="mx-4 mt-3 rounded-xl p-3.5" style={{ backgroundColor: '#FFF4E6' }}>
+            <p className="text-xs font-semibold mb-1" style={{ color: '#8B5E3C' }}>
+              ⚠️ No recent updates ({post.daysOld} days old)
+            </p>
+            <p className="text-[11px] mb-3" style={{ color: '#8B5E3C' }}>Is this condition still active?</p>
             <div className="flex gap-2">
-              <button onClick={() => setConfirmed(true)} className="flex-1 py-2 bg-moderate/20 text-foreground rounded-lg text-xs font-medium active:scale-95 transition-transform">
+              <button
+                onClick={() => {
+                  setConfirmedNow(true);
+                  setExtraConfirms(c => c + 1);
+                  showToast?.('✓ Thanks for confirming! Post updated.', 'success');
+                }}
+                className="flex-1 py-2 bg-pgn-sand text-pgn-navy rounded-lg text-xs font-semibold active:scale-95 transition-transform"
+              >
                 <Check size={14} className="inline mr-1" /> Yes, still active
               </button>
-              <button onClick={() => setResolved(true)} className="flex-1 py-2 bg-minor/20 text-foreground rounded-lg text-xs font-medium active:scale-95 transition-transform">
+              <button
+                onClick={() => {
+                  setResolvedNow(true);
+                  showToast?.('✓ Marked as resolved. Thanks for the update!', 'success');
+                }}
+                className="flex-1 py-2 text-white rounded-lg text-xs font-semibold active:scale-95 transition-transform"
+                style={{ backgroundColor: '#10B981' }}
+              >
                 <Check size={14} className="inline mr-1" /> Resolved
               </button>
             </div>
+            {totalConfirms > 0 && (
+              <p className="text-[11px] mt-3 font-medium text-minor">
+                ✓ {totalConfirms} traveler{totalConfirms === 1 ? '' : 's'} confirmed this is still an issue
+              </p>
+            )}
           </div>
         )}
-        {confirmed && (
-          <div className="mx-4 mt-3 bg-moderate/10 border border-moderate/30 rounded-xl p-3 text-center">
+        {confirmedNow && (
+          <div className="mx-4 mt-3 bg-minor/10 border border-minor/30 rounded-xl p-3 text-center">
             <p className="text-xs text-foreground">✓ Confirmed still active – thanks!</p>
           </div>
         )}
-        {resolved && (
+        {resolvedNow && (
           <div className="mx-4 mt-3 bg-minor/10 border border-minor/30 rounded-xl p-3 text-center">
             <p className="text-xs text-foreground">✓ Marked as resolved – thanks!</p>
           </div>
+        )}
+
+        {/* History link (always available when there is history) */}
+        {getRoadHistory(mockPosts, post).length > 0 && !showRelated && (
+          <button
+            onClick={() => onNavigate({ type: 'history', road: post.road })}
+            className="mx-4 mt-3 w-[calc(100%-2rem)] flex items-center justify-center gap-1.5 py-2 text-xs font-semibold text-pgn-blue active:opacity-70"
+          >
+            <History size={14} /> View road history
+          </button>
         )}
 
         {/* Replies */}
