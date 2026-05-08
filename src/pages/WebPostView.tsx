@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import { Link, useParams } from "react-router-dom";
-import { MapPin, MessageCircle, Apple, Play, ArrowLeft } from "lucide-react";
+import { MapPin, MessageCircle, Apple, Play, ArrowLeft, Lock, MoreVertical } from "lucide-react";
 import { mockPosts, conditionConfig, severityConfig, directionConfig } from "@/data/mockData";
 
 const WebPostView = () => {
