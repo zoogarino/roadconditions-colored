@@ -221,7 +221,7 @@ export const DetailScreen = ({ postId, onBack, isOffline }: DetailScreenProps) =
       </div>
 
       {/* Overlays */}
-      {showShare && <ShareSheet onClose={() => setShowShare(false)} />}
+      {showShare && <ShareSheet post={post} onClose={() => setShowShare(false)} />}
       {contextMenu && (
         <ContextMenu
           isOwn={contextMenu.isOwn}
