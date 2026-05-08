@@ -4,11 +4,13 @@ import { Signal, Wifi, WifiOff, Battery } from "lucide-react";
 import { FeedScreen } from "@/components/forum/FeedScreen";
 import { DetailScreen } from "@/components/forum/DetailScreen";
 import { CreateScreen } from "@/components/forum/CreateScreen";
+import { RoadHistoryScreen } from "@/components/forum/RoadHistoryScreen";
 
 export type ScreenState =
   | { type: 'feed' }
   | { type: 'detail'; postId: string }
-  | { type: 'create' };
+  | { type: 'create' }
+  | { type: 'history'; road: string };
 
 const Index = () => {
   const [screen, setScreen] = useState<ScreenState>({ type: 'feed' });
@@ -72,9 +74,11 @@ const Index = () => {
       case 'feed':
         return <FeedScreen onNavigate={navigate} onBack={goBack} isOffline={isOffline} showToast={showToast} />;
       case 'detail':
-        return <DetailScreen postId={screen.postId} onNavigate={navigate} onBack={goBack} isOffline={isOffline} />;
+        return <DetailScreen postId={screen.postId} onNavigate={navigate} onBack={goBack} isOffline={isOffline} showToast={showToast} />;
       case 'create':
         return <CreateScreen onNavigate={navigate} onBack={goBack} isOffline={isOffline} />;
+      case 'history':
+        return <RoadHistoryScreen road={screen.road} onNavigate={navigate} onBack={goBack} />;
     }
   };
 
