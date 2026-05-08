@@ -34,6 +34,11 @@ export const DemoLinksMenu = () => {
       desc: "How the share appears in Facebook",
       href: "/previews/facebook",
     },
+    {
+      label: "Open Graph image",
+      desc: "Auto-generated share image variations",
+      href: "/previews/og-image",
+    },
   ];
 
   return (
