@@ -31,7 +31,7 @@ const WebPostView = () => {
           <MoreVertical size={16} className="text-[#3D3530]" />
         </div>
         {/* Website header */}
-        <header className="bg-card border-b border-border px-4 py-3 flex items-center gap-3 sticky top-0 z-30">
+        <header className="bg-card border-b border-border px-4 py-3 flex items-center gap-3 sticky top-14 z-30">
           <div className="w-8 h-8 rounded-md bg-primary flex items-center justify-center text-white font-bold text-sm">
             P
           </div>
