@@ -3,7 +3,7 @@ import { ArrowLeft, Search, SlidersHorizontal, Plus, X, Loader2 } from "lucide-r
 import { mockPosts } from "@/data/mockData";
 import { computeStatus, relevanceScore } from "@/lib/lifecycle";
 import { PostCard } from "./PostCard";
-import { FilterModal, ContextMenu, ReportModal, ReportSuccessToast, DeleteConfirmModal } from "./Overlays";
+import { FilterModal, ContextMenu, ReportModal, ReportSuccessToast, DeleteConfirmModal, ShareSheet } from "./Overlays";
 import type { ScreenState } from "@/pages/Index";
 
 interface FeedScreenProps {
