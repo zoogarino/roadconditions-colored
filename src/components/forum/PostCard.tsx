@@ -33,6 +33,9 @@ export const PostCard = ({ post, onTap, onLongPress }: PostCardProps) => {
         onClick={onTap}
         onTouchStart={handleTouchStart}
         onTouchEnd={handleTouchEnd}
+        onMouseDown={handleTouchStart}
+        onMouseUp={handleTouchEnd}
+        onMouseLeave={handleTouchEnd}
         className="relative w-full text-left rounded-xl p-4 border-2 border-pgn-terracotta active:scale-[0.99] transition-transform"
         style={{ backgroundColor: '#FFFBF5', boxShadow: '0 2px 8px rgba(212, 133, 74, 0.15)' }}
       >
