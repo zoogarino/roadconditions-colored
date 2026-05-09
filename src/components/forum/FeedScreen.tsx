@@ -3,7 +3,7 @@ import { ArrowLeft, Search, SlidersHorizontal, Plus, X, Loader2 } from "lucide-r
 import { mockPosts } from "@/data/mockData";
 import { computeStatus, relevanceScore } from "@/lib/lifecycle";
 import { PostCard } from "./PostCard";
-import { FilterModal, ContextMenu, ReportModal, ReportSuccessToast, DeleteConfirmModal } from "./Overlays";
+import { FilterModal, ContextMenu, ReportModal, ReportSuccessToast, DeleteConfirmModal, ShareSheet } from "./Overlays";
 import type { ScreenState } from "@/pages/Index";
 
 interface FeedScreenProps {
@@ -28,7 +28,8 @@ export const FeedScreen = ({ onNavigate, isOffline, showToast }: FeedScreenProps
   const [showSearch, setShowSearch] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
   const [isRefreshing, setIsRefreshing] = useState(false);
-  const [contextMenu, setContextMenu] = useState<{ postId: string; isOwn: boolean } | null>(null);
+  const [contextMenu, setContextMenu] = useState<{ postId: string; isOwn: boolean; pinnedOnly: boolean } | null>(null);
+  const [shareTarget, setShareTarget] = useState<string | null>(null);
   const [bannerDismissed, setBannerDismissed] = useState(false);
   const [showReport, setShowReport] = useState(false);
   const [reportSuccess, setReportSuccess] = useState(false);
@@ -219,7 +220,7 @@ export const FeedScreen = ({ onNavigate, isOffline, showToast }: FeedScreenProps
               key={post.id}
               post={post}
               onTap={() => onNavigate({ type: 'detail', postId: post.id })}
-              onLongPress={() => setContextMenu({ postId: post.id, isOwn: post.author.name === 'You' })}
+              onLongPress={() => setContextMenu({ postId: post.id, isOwn: post.author.name === 'You', pinnedOnly: !!post.isPinned })}
             />
           ))
         )}
@@ -247,9 +248,17 @@ export const FeedScreen = ({ onNavigate, isOffline, showToast }: FeedScreenProps
       {contextMenu && (
         <ContextMenu
           isOwn={contextMenu.isOwn}
+          pinnedOnly={contextMenu.pinnedOnly}
           onClose={() => setContextMenu(null)}
+          onShare={() => setShareTarget(contextMenu.postId)}
           onReport={() => setShowReport(true)}
           onDelete={() => setDeleteTarget(contextMenu.postId)}
+        />
+      )}
+      {shareTarget && (
+        <ShareSheet
+          post={mockPosts.find(p => p.id === shareTarget)}
+          onClose={() => setShareTarget(null)}
         />
       )}
       {deleteTarget && (
