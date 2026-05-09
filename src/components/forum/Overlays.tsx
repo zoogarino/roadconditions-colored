@@ -303,12 +303,16 @@ export const FilterModal = ({ onClose }: { onClose: () => void }) => {
 
 export const ContextMenu = ({
   isOwn,
+  pinnedOnly = false,
   onClose,
+  onShare,
   onReport,
   onDelete,
 }: {
   isOwn: boolean;
+  pinnedOnly?: boolean;
   onClose: () => void;
+  onShare?: () => void;
   onReport?: () => void;
   onDelete?: () => void;
 }) => (
@@ -322,10 +326,10 @@ export const ContextMenu = ({
     >
       <div className="w-10 h-1 bg-border rounded-full mx-auto mb-2" />
       {([
-        { key: 'share', icon: <Share2 size={18} />, label: 'Share', show: true, danger: false, onClick: onClose },
-        { key: 'save', icon: <Bookmark size={18} />, label: 'Save for Later', show: true, danger: false, onClick: onClose },
-        { key: 'report', icon: <Flag size={18} />, label: 'Report', show: true, danger: true, onClick: () => { onClose(); onReport?.(); } },
-        { key: 'delete', icon: <Trash2 size={18} />, label: 'Delete', show: isOwn, danger: true, onClick: () => { onClose(); onDelete?.(); } },
+        { key: 'share', icon: <Share2 size={18} />, label: 'Share', show: true, danger: false, onClick: () => { onClose(); onShare?.(); } },
+        { key: 'save', icon: <Bookmark size={18} />, label: 'Save for Later', show: !pinnedOnly, danger: false, onClick: onClose },
+        { key: 'report', icon: <Flag size={18} />, label: 'Report', show: !pinnedOnly, danger: true, onClick: () => { onClose(); onReport?.(); } },
+        { key: 'delete', icon: <Trash2 size={18} />, label: 'Delete', show: !pinnedOnly && isOwn, danger: true, onClick: () => { onClose(); onDelete?.(); } },
       ])
         .filter(item => item.show)
         .map(item => (
