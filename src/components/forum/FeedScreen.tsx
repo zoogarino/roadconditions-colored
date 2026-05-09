@@ -248,9 +248,17 @@ export const FeedScreen = ({ onNavigate, isOffline, showToast }: FeedScreenProps
       {contextMenu && (
         <ContextMenu
           isOwn={contextMenu.isOwn}
+          pinnedOnly={contextMenu.pinnedOnly}
           onClose={() => setContextMenu(null)}
+          onShare={() => setShareTarget(contextMenu.postId)}
           onReport={() => setShowReport(true)}
           onDelete={() => setDeleteTarget(contextMenu.postId)}
+        />
+      )}
+      {shareTarget && (
+        <ShareSheet
+          post={mockPosts.find(p => p.id === shareTarget)}
+          onClose={() => setShareTarget(null)}
         />
       )}
       {deleteTarget && (
