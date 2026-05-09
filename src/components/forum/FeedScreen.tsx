@@ -220,7 +220,7 @@ export const FeedScreen = ({ onNavigate, isOffline, showToast }: FeedScreenProps
               key={post.id}
               post={post}
               onTap={() => onNavigate({ type: 'detail', postId: post.id })}
-              onLongPress={() => setContextMenu({ postId: post.id, isOwn: post.author.name === 'You' })}
+              onLongPress={() => setContextMenu({ postId: post.id, isOwn: post.author.name === 'You', pinnedOnly: !!post.isPinned })}
             />
           ))
         )}
