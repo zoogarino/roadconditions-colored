@@ -6,6 +6,7 @@ import { DetailScreen } from "@/components/forum/DetailScreen";
 import { CreateScreen } from "@/components/forum/CreateScreen";
 import { RoadHistoryScreen } from "@/components/forum/RoadHistoryScreen";
 import { GuidelinesSheet } from "@/components/forum/GuidelinesSheet";
+import { ThreadDetailScreen } from "@/components/forum/ThreadDetailScreen";
 import { DemoLinksMenu } from "@/components/DemoLinksMenu";
 
 export type ScreenState =
@@ -13,6 +14,9 @@ export type ScreenState =
   | { type: 'detail'; postId: string }
   | { type: 'create' }
   | { type: 'guidelines' }
+  | { type: 'thread-view' }
+  | { type: 'thread-input' }
+  | { type: 'thread-limit' }
   | { type: 'history'; road: string };
 
 const Index = () => {
