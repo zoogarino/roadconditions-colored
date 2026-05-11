@@ -106,6 +106,8 @@ const Index = () => {
         return <ThreadDetailScreen onBack={goBack} onNavigate={navigate} stateLabel="Reply Input Open" initial={{ kind: 'inputOpen', replyId: 'r2' }} />;
       case 'thread-limit':
         return <ThreadDetailScreen onBack={goBack} onNavigate={navigate} stateLabel="Reply Limit Reached" initial={{ kind: 'limitReached', replyId: 'r1a' }} />;
+      case 'empty':
+        return <EmptyStateScreen variant={screen.variant} onBack={goBack} onNavigate={navigate} />;
     }
   };
 
