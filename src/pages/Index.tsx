@@ -5,12 +5,14 @@ import { FeedScreen } from "@/components/forum/FeedScreen";
 import { DetailScreen } from "@/components/forum/DetailScreen";
 import { CreateScreen } from "@/components/forum/CreateScreen";
 import { RoadHistoryScreen } from "@/components/forum/RoadHistoryScreen";
+import { GuidelinesSheet } from "@/components/forum/GuidelinesSheet";
 import { DemoLinksMenu } from "@/components/DemoLinksMenu";
 
 export type ScreenState =
   | { type: 'feed' }
   | { type: 'detail'; postId: string }
   | { type: 'create' }
+  | { type: 'guidelines' }
   | { type: 'history'; road: string };
 
 const Index = () => {
@@ -82,12 +84,31 @@ const Index = () => {
         return <CreateScreen onNavigate={navigate} onBack={goBack} isOffline={isOffline} />;
       case 'history':
         return <RoadHistoryScreen road={screen.road} onNavigate={navigate} onBack={goBack} />;
+      case 'guidelines':
+        return (
+          <div className="absolute inset-0">
+            <FeedScreen onNavigate={navigate} onBack={goBack} isOffline={isOffline} showToast={showToast} />
+            <GuidelinesSheet
+              onAgree={() => setScreen({ type: 'create' })}
+              onDismiss={() => setScreen({ type: 'feed' })}
+            />
+          </div>
+        );
     }
   };
 
   return (
     <div className="min-h-screen bg-pgn-warm-border/40 flex items-center justify-center md:p-8">
-      <DemoLinksMenu />
+      <DemoLinksMenu
+        onSelectState={(s) => {
+          setHistory([]);
+          setScreen(s);
+        }}
+        states={[
+          { label: 'First Post — Guidelines Sheet', desc: 'Bottom sheet shown to first-time posters', state: { type: 'guidelines' } },
+          { label: 'Returning User — Post Form', desc: 'Direct post creation, bypassing guidelines', state: { type: 'create' } },
+        ]}
+      />
       <div className="w-full md:w-[390px] md:h-[844px] md:rounded-[44px] md:shadow-2xl md:border-[10px] md:border-pgn-dark bg-background overflow-hidden relative flex flex-col min-h-screen md:min-h-0">
         {/* Notch */}
         <div className="hidden md:block absolute top-0 left-1/2 -translate-x-1/2 w-[120px] h-[28px] bg-pgn-dark rounded-b-[18px] z-50" />
