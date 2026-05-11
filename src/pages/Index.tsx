@@ -7,6 +7,7 @@ import { CreateScreen } from "@/components/forum/CreateScreen";
 import { RoadHistoryScreen } from "@/components/forum/RoadHistoryScreen";
 import { GuidelinesSheet } from "@/components/forum/GuidelinesSheet";
 import { ThreadDetailScreen } from "@/components/forum/ThreadDetailScreen";
+import { EmptyStateScreen, type EmptyStateVariant } from "@/components/forum/EmptyStateScreen";
 import { DemoLinksMenu } from "@/components/DemoLinksMenu";
 
 export type ScreenState =
@@ -17,6 +18,7 @@ export type ScreenState =
   | { type: 'thread-view' }
   | { type: 'thread-input' }
   | { type: 'thread-limit' }
+  | { type: 'empty'; variant: EmptyStateVariant }
   | { type: 'history'; road: string };
 
 const Index = () => {
