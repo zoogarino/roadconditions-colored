@@ -80,6 +80,27 @@ export const DemoLinksMenu = ({ onSelectState, states = [] }: DemoLinksMenuProps
             ))}
           </div>
 
+          {states.length > 0 && onSelectState && (
+            <div className="px-2 pb-2 pt-1 border-t border-pgn-warm-border">
+              <p className="px-2 pt-2 pb-1 text-[10px] uppercase tracking-wide font-semibold text-foreground/50">
+                Prototype states
+              </p>
+              {states.map((s, i) => (
+                <button
+                  key={i}
+                  onClick={() => { onSelectState(s.state); setOpen(false); }}
+                  className="w-full flex items-start gap-2 px-2 py-2 rounded-lg hover:bg-pgn-warm-border/40 transition-colors text-left"
+                >
+                  <Layers size={14} className="text-pgn-terracotta mt-0.5 flex-shrink-0" />
+                  <div className="flex-1 min-w-0">
+                    <p className="text-xs font-semibold text-pgn-navy leading-tight">{s.label}</p>
+                    <p className="text-[11px] text-foreground/60 leading-snug mt-0.5">{s.desc}</p>
+                  </div>
+                </button>
+              ))}
+            </div>
+          )}
+
           <div className="px-3 py-2 bg-pgn-warm-border/30 border-t border-pgn-warm-border flex gap-2">
             <Info size={12} className="text-foreground/60 mt-0.5 flex-shrink-0" />
             <p className="text-[10px] text-foreground/70 leading-snug">
