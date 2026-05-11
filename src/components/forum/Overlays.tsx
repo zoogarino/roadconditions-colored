@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { X, Share2, Flag, Trash2, Bookmark, Check, MapPin, Eye } from "lucide-react";
+import { X, Share2, Flag, Trash2, Check, MapPin, Eye } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import type { Post } from "@/data/mockData";
 import { conditionConfig, severityConfig } from "@/data/mockData";
@@ -327,7 +327,7 @@ export const ContextMenu = ({
       <div className="w-10 h-1 bg-border rounded-full mx-auto mb-2" />
       {([
         { key: 'share', icon: <Share2 size={18} />, label: 'Share', show: true, danger: false, onClick: () => { onClose(); onShare?.(); } },
-        { key: 'save', icon: <Bookmark size={18} />, label: 'Save for Later', show: !pinnedOnly, danger: false, onClick: onClose },
+        
         { key: 'report', icon: <Flag size={18} />, label: 'Report', show: !pinnedOnly, danger: true, onClick: () => { onClose(); onReport?.(); } },
         { key: 'delete', icon: <Trash2 size={18} />, label: 'Delete', show: !pinnedOnly && isOwn, danger: true, onClick: () => { onClose(); onDelete?.(); } },
       ])
