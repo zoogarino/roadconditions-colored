@@ -98,6 +98,12 @@ const Index = () => {
             />
           </div>
         );
+      case 'thread-view':
+        return <ThreadDetailScreen onBack={goBack} onNavigate={navigate} stateLabel="Thread View" initial={{ kind: 'none' }} />;
+      case 'thread-input':
+        return <ThreadDetailScreen onBack={goBack} onNavigate={navigate} stateLabel="Reply Input Open" initial={{ kind: 'inputOpen', replyId: 'r2' }} />;
+      case 'thread-limit':
+        return <ThreadDetailScreen onBack={goBack} onNavigate={navigate} stateLabel="Reply Limit Reached" initial={{ kind: 'limitReached', replyId: 'r1a' }} />;
     }
   };
 
