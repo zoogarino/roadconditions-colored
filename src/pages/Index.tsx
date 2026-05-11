@@ -84,6 +84,16 @@ const Index = () => {
         return <CreateScreen onNavigate={navigate} onBack={goBack} isOffline={isOffline} />;
       case 'history':
         return <RoadHistoryScreen road={screen.road} onNavigate={navigate} onBack={goBack} />;
+      case 'guidelines':
+        return (
+          <div className="absolute inset-0">
+            <FeedScreen onNavigate={navigate} onBack={goBack} isOffline={isOffline} showToast={showToast} />
+            <GuidelinesSheet
+              onAgree={() => setScreen({ type: 'create' })}
+              onDismiss={() => setScreen({ type: 'feed' })}
+            />
+          </div>
+        );
     }
   };
 
