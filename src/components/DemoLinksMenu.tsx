@@ -1,20 +1,27 @@
 import { useState } from "react";
-import { FlaskConical, X, ExternalLink, Info } from "lucide-react";
+import { FlaskConical, X, ExternalLink, Info, Layers } from "lucide-react";
 import { mockPosts } from "@/data/mockData";
+import type { ScreenState } from "@/pages/Index";
+
+interface PrototypeStateLink {
+  label: string;
+  desc: string;
+  state: ScreenState;
+}
+
+interface DemoLinksMenuProps {
+  onSelectState?: (state: ScreenState) => void;
+  states?: PrototypeStateLink[];
+}
 
 /**
  * DemoLinksMenu
  * ----------------------------------------------------------------
  * DEV/PROTOTYPE ONLY — not part of the production app.
- *
- * This floating panel exposes routes that exist outside the main
- * phone-frame mockup (web fallback view, social link previews) so
- * stakeholders and developers can jump to them during walkthroughs.
- *
- * Remove this component (and its usage in `src/pages/Index.tsx`)
- * before shipping to production.
+ * Exposes external preview routes AND in-app prototype states for
+ * stakeholder walkthroughs. Remove before shipping.
  */
-export const DemoLinksMenu = () => {
+export const DemoLinksMenu = ({ onSelectState, states = [] }: DemoLinksMenuProps) => {
   const [open, setOpen] = useState(false);
   const samplePostId = mockPosts[0]?.id ?? "1";
 
