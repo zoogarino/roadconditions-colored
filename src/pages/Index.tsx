@@ -124,6 +124,10 @@ const Index = () => {
           { label: 'Post Detail — Thread View', desc: '2-level threaded replies, no input open', state: { type: 'thread-view' } },
           { label: 'Post Detail — Reply Input Open (L1)', desc: 'Inline reply field expanded under a level-1 reply', state: { type: 'thread-input' } },
           { label: 'Post Detail — Reply Limit Reached', desc: 'Inline notice shown when replying to a level-2 reply', state: { type: 'thread-limit' } },
+          { label: 'Empty State — Feed', desc: 'No active or pinned posts', state: { type: 'empty', variant: 'feed' } },
+          { label: 'Empty State — Search', desc: 'Search query returns no results', state: { type: 'empty', variant: 'search' } },
+          { label: 'Empty State — Resolved Tab', desc: 'Resolved tab with no content', state: { type: 'empty', variant: 'resolved' } },
+          { label: 'Empty State — Active Filter', desc: 'Active filter with no matching posts', state: { type: 'empty', variant: 'filter' } },
         ]}
       />
       <div className="w-full md:w-[390px] md:h-[844px] md:rounded-[44px] md:shadow-2xl md:border-[10px] md:border-pgn-dark bg-background overflow-hidden relative flex flex-col min-h-screen md:min-h-0">
