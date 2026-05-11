@@ -5,12 +5,14 @@ import { FeedScreen } from "@/components/forum/FeedScreen";
 import { DetailScreen } from "@/components/forum/DetailScreen";
 import { CreateScreen } from "@/components/forum/CreateScreen";
 import { RoadHistoryScreen } from "@/components/forum/RoadHistoryScreen";
+import { GuidelinesSheet } from "@/components/forum/GuidelinesSheet";
 import { DemoLinksMenu } from "@/components/DemoLinksMenu";
 
 export type ScreenState =
   | { type: 'feed' }
   | { type: 'detail'; postId: string }
   | { type: 'create' }
+  | { type: 'guidelines' }
   | { type: 'history'; road: string };
 
 const Index = () => {
