@@ -6,6 +6,7 @@ import { DetailScreen } from "@/components/forum/DetailScreen";
 import { CreateScreen } from "@/components/forum/CreateScreen";
 import { RoadHistoryScreen } from "@/components/forum/RoadHistoryScreen";
 import { GuidelinesSheet } from "@/components/forum/GuidelinesSheet";
+import { ThreadDetailScreen } from "@/components/forum/ThreadDetailScreen";
 import { DemoLinksMenu } from "@/components/DemoLinksMenu";
 
 export type ScreenState =
@@ -13,6 +14,9 @@ export type ScreenState =
   | { type: 'detail'; postId: string }
   | { type: 'create' }
   | { type: 'guidelines' }
+  | { type: 'thread-view' }
+  | { type: 'thread-input' }
+  | { type: 'thread-limit' }
   | { type: 'history'; road: string };
 
 const Index = () => {
@@ -94,6 +98,12 @@ const Index = () => {
             />
           </div>
         );
+      case 'thread-view':
+        return <ThreadDetailScreen onBack={goBack} onNavigate={navigate} stateLabel="Thread View" initial={{ kind: 'none' }} />;
+      case 'thread-input':
+        return <ThreadDetailScreen onBack={goBack} onNavigate={navigate} stateLabel="Reply Input Open" initial={{ kind: 'inputOpen', replyId: 'r2' }} />;
+      case 'thread-limit':
+        return <ThreadDetailScreen onBack={goBack} onNavigate={navigate} stateLabel="Reply Limit Reached" initial={{ kind: 'limitReached', replyId: 'r1a' }} />;
     }
   };
 
@@ -107,6 +117,9 @@ const Index = () => {
         states={[
           { label: 'First Post — Guidelines Sheet', desc: 'Bottom sheet shown to first-time posters', state: { type: 'guidelines' } },
           { label: 'Returning User — Post Form', desc: 'Direct post creation, bypassing guidelines', state: { type: 'create' } },
+          { label: 'Post Detail — Thread View', desc: '2-level threaded replies, no input open', state: { type: 'thread-view' } },
+          { label: 'Post Detail — Reply Input Open (L1)', desc: 'Inline reply field expanded under a level-1 reply', state: { type: 'thread-input' } },
+          { label: 'Post Detail — Reply Limit Reached', desc: 'Inline notice shown when replying to a level-2 reply', state: { type: 'thread-limit' } },
         ]}
       />
       <div className="w-full md:w-[390px] md:h-[844px] md:rounded-[44px] md:shadow-2xl md:border-[10px] md:border-pgn-dark bg-background overflow-hidden relative flex flex-col min-h-screen md:min-h-0">
