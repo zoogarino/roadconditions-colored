@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { FlaskConical, X, ExternalLink, Info, Layers } from "lucide-react";
+import { FlaskConical, X, ExternalLink, Info, Layers, Home } from "lucide-react";
 import { mockPosts } from "@/data/mockData";
 import type { ScreenState } from "@/pages/Index";
 
@@ -79,6 +79,18 @@ export const DemoLinksMenu = ({ onSelectState, states = [] }: DemoLinksMenuProps
               </a>
             ))}
           </div>
+
+          {onSelectState && (
+            <div className="px-2 pt-2 border-t border-pgn-warm-border">
+              <button
+                onClick={() => { onSelectState({ type: 'feed' }); setOpen(false); }}
+                className="w-full flex items-center gap-2 px-2 py-2 rounded-lg bg-pgn-warm-border/30 hover:bg-pgn-warm-border/60 transition-colors text-left"
+              >
+                <Home size={14} className="text-pgn-navy flex-shrink-0" />
+                <span className="text-xs font-semibold text-pgn-navy">Back to main mockup</span>
+              </button>
+            </div>
+          )}
 
           {states.length > 0 && onSelectState && (
             <div className="px-2 pb-2 pt-1 border-t border-pgn-warm-border">
