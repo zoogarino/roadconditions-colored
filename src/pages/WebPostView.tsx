@@ -84,7 +84,7 @@ const WebPostView = () => {
             {dir.icon && <span className="text-[11px] text-muted-foreground">{dir.label} {dir.icon}</span>}
           </div>
 
-          <p className="text-sm text-foreground/80 leading-relaxed mb-4">{post.description}</p>
+          <p className="text-sm leading-relaxed mb-4" style={{ color: '#3D3530' }}>{post.description}</p>
 
           <div
             className="w-full h-36 rounded-lg flex items-center justify-center"
