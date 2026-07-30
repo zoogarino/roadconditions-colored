@@ -105,7 +105,7 @@ const WebPostView = () => {
         {/* Download CTA banner */}
         <section
           className="mx-4 mt-4 p-5"
-          style={{ backgroundColor: '#F5ECD7', borderRadius: 12, boxShadow: '0 2px 8px rgba(139, 94, 60, 0.06)' }}
+          style={{ backgroundColor: '#F5ECD7', borderRadius: 12, boxShadow: '0 4px 14px rgba(139, 94, 60, 0.09)' }}
         >
           <div className="flex items-center gap-2.5 mb-2">
             <div className="w-9 h-9 rounded-full bg-white flex items-center justify-center shrink-0">
