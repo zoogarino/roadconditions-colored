@@ -104,29 +104,31 @@ const WebPostView = () => {
 
         {/* Download CTA banner */}
         <section
-          className="mx-4 mt-4 rounded-xl p-5 border"
-          style={{ backgroundColor: '#F5ECD7', borderColor: '#D4854A' }}
+          className="mx-4 mt-4 p-5"
+          style={{ backgroundColor: '#F5ECD7', borderRadius: 12, boxShadow: '0 2px 8px rgba(139, 94, 60, 0.06)' }}
         >
-          <div className="flex items-center gap-2 mb-2">
-            <MessageCircle size={20} className="text-pgn-navy" />
+          <div className="flex items-center gap-2.5 mb-2">
+            <div className="w-9 h-9 rounded-full bg-white flex items-center justify-center shrink-0">
+              <MessageCircle size={18} style={{ color: '#D4854A' }} />
+            </div>
             <h2 className="font-bold text-pgn-navy text-base">Join the Discussion</h2>
           </div>
           <p className="text-xs text-foreground/80 leading-relaxed mb-4">
             Download Pocket Guide Namibia to reply, post updates, and get real-time road alerts.
           </p>
-          <div className="flex flex-col gap-2">
-            <a href="#" className="flex items-center justify-center gap-2 bg-pgn-dark text-white rounded-lg py-2.5 text-xs font-semibold active:opacity-80">
-              <Apple size={16} /> Download on the App Store
+          <div className="flex gap-2.5">
+            <a href="#" className="flex-1 flex items-center justify-center gap-1.5 bg-pgn-dark text-white py-2.5 px-2 text-[11px] font-semibold text-center active:opacity-80 transition-shadow hover:shadow-md" style={{ borderRadius: 10 }}>
+              <Apple size={14} className="shrink-0" /> Download on the App Store
             </a>
-            <a href="#" className="flex items-center justify-center gap-2 bg-pgn-dark text-white rounded-lg py-2.5 text-xs font-semibold active:opacity-80">
-              <Play size={16} /> Get it on Google Play
+            <a href="#" className="flex-1 flex items-center justify-center gap-1.5 bg-pgn-dark text-white py-2.5 px-2 text-[11px] font-semibold text-center active:opacity-80 transition-shadow hover:shadow-md" style={{ borderRadius: 10 }}>
+              <Play size={14} className="shrink-0" /> Get it on Google Play
             </a>
           </div>
         </section>
 
         {/* Replies (read-only) */}
         <section className="px-4 mt-6">
-          <h3 className="text-sm font-semibold text-foreground mb-2">{post.replies.length} Replies</h3>
+          <h3 className="text-sm font-semibold text-foreground mb-2 pt-4" style={{ borderTop: '1px solid #E8D9C8' }}>{post.replies.length} Replies</h3>
           <div className="space-y-2 opacity-85">
             {post.replies.slice(0, 3).map(r => (
               <div key={r.id} className="bg-card rounded-xl p-3 border border-border">
