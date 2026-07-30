@@ -156,8 +156,8 @@ const WebPostView = () => {
       {/* Sticky bottom CTA */}
       <a
         href="#"
-        className="fixed bottom-0 left-0 right-0 mx-auto max-w-[480px] h-14 flex items-center justify-center text-white font-bold text-sm shadow-2xl active:opacity-90 z-40"
-        style={{ backgroundColor: '#D4854A' }}
+        className="fixed bottom-0 left-0 right-0 mx-auto max-w-[480px] h-14 flex items-center justify-center text-white font-bold text-sm active:opacity-90 z-40"
+        style={{ backgroundColor: '#D4854A', boxShadow: '0 -4px 12px rgba(0, 0, 0, 0.08)' }}
       >
         Download App to Reply
       </a>
