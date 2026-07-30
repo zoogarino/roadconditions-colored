@@ -54,7 +54,7 @@ const WebPostView = () => {
         {/* Post card */}
         <article
           className="bg-card mx-4 mt-3 p-4 border border-border"
-          style={{ borderRadius: 16, boxShadow: '0 2px 12px rgba(27, 63, 143, 0.08)' }}
+          style={{ borderRadius: 16, boxShadow: '0 4px 16px rgba(27, 63, 143, 0.10)' }}
         >
           <div className="flex items-center gap-2.5 mb-3">
             <div className={`w-10 h-10 rounded-full flex items-center justify-center text-xs font-bold text-card ${post.author.color}`}>
@@ -84,7 +84,7 @@ const WebPostView = () => {
             {dir.icon && <span className="text-[11px] text-muted-foreground">{dir.label} {dir.icon}</span>}
           </div>
 
-          <p className="text-sm text-foreground/80 leading-relaxed mb-4">{post.description}</p>
+          <p className="text-sm leading-relaxed mb-4" style={{ color: '#3D3530' }}>{post.description}</p>
 
           <div
             className="w-full h-36 rounded-lg flex items-center justify-center"
@@ -105,7 +105,7 @@ const WebPostView = () => {
         {/* Download CTA banner */}
         <section
           className="mx-4 mt-4 p-5"
-          style={{ backgroundColor: '#F5ECD7', borderRadius: 12, boxShadow: '0 2px 8px rgba(139, 94, 60, 0.06)' }}
+          style={{ backgroundColor: '#F5ECD7', borderRadius: 12, boxShadow: '0 4px 14px rgba(139, 94, 60, 0.09)' }}
         >
           <div className="flex items-center gap-2.5 mb-2">
             <div className="w-9 h-9 rounded-full bg-white flex items-center justify-center shrink-0">
