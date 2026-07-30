@@ -20,8 +20,8 @@ const WebPostView = () => {
   const dir = directionConfig[post.direction];
 
   return (
-    <div className="min-h-screen bg-pgn-warm-border/40">
-      <div className="mx-auto w-full max-w-[480px] bg-background min-h-screen pb-24 shadow-xl">
+    <div className="min-h-screen" style={{ backgroundColor: '#FDF6EE' }}>
+      <div className="mx-auto w-full max-w-[480px] min-h-screen pb-24 shadow-xl" style={{ backgroundColor: '#FDF6EE' }}>
         {/* Mobile browser chrome */}
         <div className="bg-[#F5F5F5] h-14 flex items-center gap-2 px-3 border-b border-[#E4E6EB] sticky top-0 z-40">
           <Lock size={12} className="text-[#3D3530]" />
@@ -52,7 +52,10 @@ const WebPostView = () => {
         </div>
 
         {/* Post card */}
-        <article className="bg-card mx-4 mt-3 rounded-xl p-4 shadow-sm border border-border">
+        <article
+          className="bg-card mx-4 mt-3 p-4 border border-border"
+          style={{ borderRadius: 16, boxShadow: '0 2px 12px rgba(27, 63, 143, 0.08)' }}
+        >
           <div className="flex items-center gap-2.5 mb-3">
             <div className={`w-10 h-10 rounded-full flex items-center justify-center text-xs font-bold text-card ${post.author.color}`}>
               {post.author.initials}
@@ -83,9 +86,17 @@ const WebPostView = () => {
 
           <p className="text-sm text-foreground/80 leading-relaxed mb-4">{post.description}</p>
 
-          <div className="w-full h-36 bg-gradient-to-br from-accent to-secondary rounded-lg flex items-center justify-center">
+          <div
+            className="w-full h-36 rounded-lg flex items-center justify-center"
+            style={{ backgroundColor: '#FDF6EE', border: '1px solid #E8D9C8', boxShadow: 'inset 0 1px 3px rgba(139, 94, 60, 0.05)' }}
+          >
             <div className="text-center">
-              <MapPin size={24} className="text-primary mx-auto mb-1" />
+              <div
+                className="w-10 h-10 rounded-full mx-auto mb-2 flex items-center justify-center"
+                style={{ backgroundColor: '#FCE8E3' }}
+              >
+                <MapPin size={20} style={{ color: '#D4854A' }} />
+              </div>
               <span className="text-[11px] text-muted-foreground">{post.location}</span>
             </div>
           </div>
@@ -93,29 +104,31 @@ const WebPostView = () => {
 
         {/* Download CTA banner */}
         <section
-          className="mx-4 mt-4 rounded-xl p-5 border"
-          style={{ backgroundColor: '#F5ECD7', borderColor: '#D4854A' }}
+          className="mx-4 mt-4 p-5"
+          style={{ backgroundColor: '#F5ECD7', borderRadius: 12, boxShadow: '0 2px 8px rgba(139, 94, 60, 0.06)' }}
         >
-          <div className="flex items-center gap-2 mb-2">
-            <MessageCircle size={20} className="text-pgn-navy" />
+          <div className="flex items-center gap-2.5 mb-2">
+            <div className="w-9 h-9 rounded-full bg-white flex items-center justify-center shrink-0">
+              <MessageCircle size={18} style={{ color: '#D4854A' }} />
+            </div>
             <h2 className="font-bold text-pgn-navy text-base">Join the Discussion</h2>
           </div>
           <p className="text-xs text-foreground/80 leading-relaxed mb-4">
             Download Pocket Guide Namibia to reply, post updates, and get real-time road alerts.
           </p>
-          <div className="flex flex-col gap-2">
-            <a href="#" className="flex items-center justify-center gap-2 bg-pgn-dark text-white rounded-lg py-2.5 text-xs font-semibold active:opacity-80">
-              <Apple size={16} /> Download on the App Store
+          <div className="flex gap-2.5">
+            <a href="#" className="flex-1 flex items-center justify-center gap-1.5 bg-pgn-dark text-white py-2.5 px-2 text-[11px] font-semibold text-center active:opacity-80 transition-shadow hover:shadow-md" style={{ borderRadius: 10 }}>
+              <Apple size={14} className="shrink-0" /> Download on the App Store
             </a>
-            <a href="#" className="flex items-center justify-center gap-2 bg-pgn-dark text-white rounded-lg py-2.5 text-xs font-semibold active:opacity-80">
-              <Play size={16} /> Get it on Google Play
+            <a href="#" className="flex-1 flex items-center justify-center gap-1.5 bg-pgn-dark text-white py-2.5 px-2 text-[11px] font-semibold text-center active:opacity-80 transition-shadow hover:shadow-md" style={{ borderRadius: 10 }}>
+              <Play size={14} className="shrink-0" /> Get it on Google Play
             </a>
           </div>
         </section>
 
         {/* Replies (read-only) */}
         <section className="px-4 mt-6">
-          <h3 className="text-sm font-semibold text-foreground mb-2">{post.replies.length} Replies</h3>
+          <h3 className="text-sm font-semibold text-foreground mb-2 pt-4" style={{ borderTop: '1px solid #E8D9C8' }}>{post.replies.length} Replies</h3>
           <div className="space-y-2 opacity-85">
             {post.replies.slice(0, 3).map(r => (
               <div key={r.id} className="bg-card rounded-xl p-3 border border-border">
@@ -143,8 +156,8 @@ const WebPostView = () => {
       {/* Sticky bottom CTA */}
       <a
         href="#"
-        className="fixed bottom-0 left-0 right-0 mx-auto max-w-[480px] h-14 flex items-center justify-center text-white font-bold text-sm shadow-2xl active:opacity-90 z-40"
-        style={{ backgroundColor: '#D4854A' }}
+        className="fixed bottom-0 left-0 right-0 mx-auto max-w-[480px] h-14 flex items-center justify-center text-white font-bold text-sm active:opacity-90 z-40"
+        style={{ backgroundColor: '#D4854A', boxShadow: '0 -4px 12px rgba(0, 0, 0, 0.08)' }}
       >
         Download App to Reply
       </a>
