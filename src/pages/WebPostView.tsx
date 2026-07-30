@@ -54,7 +54,7 @@ const WebPostView = () => {
         {/* Post card */}
         <article
           className="bg-card mx-4 mt-3 p-4 border border-border"
-          style={{ borderRadius: 16, boxShadow: '0 2px 12px rgba(27, 63, 143, 0.08)' }}
+          style={{ borderRadius: 16, boxShadow: '0 4px 16px rgba(27, 63, 143, 0.10)' }}
         >
           <div className="flex items-center gap-2.5 mb-3">
             <div className={`w-10 h-10 rounded-full flex items-center justify-center text-xs font-bold text-card ${post.author.color}`}>
