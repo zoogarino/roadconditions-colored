@@ -433,10 +433,11 @@ const WebPostDetail = () => {
                         }
                         setReportTarget({ id: r.id, kind: "reply" });
                       }}
-                      className="ml-auto text-pgn-muted hover:text-destructive"
+                      className="ml-auto w-9 h-9 -my-2 rounded-full flex items-center justify-center text-pgn-muted hover:bg-pgn-sand hover:text-destructive transition-colors"
                     >
                       <Flag size={12} />
                     </button>
+
                   </div>
                   <p className="text-xs text-foreground/85 leading-relaxed mt-0.5">
                     {r.content.slice(0, 280)}
@@ -450,7 +451,7 @@ const WebPostDetail = () => {
                       setDraft(d => (d.startsWith(`@${r.author.name}`) ? d : `@${r.author.name} ${d}`.trim()));
                       inputRef.current?.focus();
                     }}
-                    className="text-[11px] font-semibold text-pgn-blue mt-1"
+                    className="text-[11px] font-semibold text-pgn-blue mt-1 rounded-sm hover:underline underline-offset-2 hover:text-pgn-navy transition-colors"
                   >
                     Reply
                   </button>
@@ -477,11 +478,12 @@ const WebPostDetail = () => {
               <button
                 aria-label="Post reply"
                 onClick={submitReply}
-                disabled={!draft.trim()}
-                className="w-9 h-9 rounded-full bg-primary text-pgn-navy flex items-center justify-center disabled:opacity-40"
+                disabled={!draft.trim() || !!busy}
+                className="w-9 h-9 rounded-full bg-primary text-pgn-navy flex items-center justify-center hover:brightness-95 hover:shadow-md transition-all disabled:opacity-40"
               >
-                <Send size={15} />
+                {busy === "reply" ? <Loader2 size={15} className="animate-spin" /> : <Send size={15} />}
               </button>
+
             </div>
             <p className="text-[10px] text-muted-foreground text-right mt-1">{draft.length}/280</p>
           </div>
