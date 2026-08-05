@@ -22,6 +22,8 @@ const App = () => (
         <Routes>
           <Route path="/" element={<Index />} />
           <Route path="/road-conditions" element={<RoadConditionsSite />} />
+          <Route path="/road-conditions/empty" element={<RoadConditionsSite empty />} />
+
           <Route path="/road-conditions/post/:id" element={<WebPostView />} />
 
           <Route path="/previews/whatsapp" element={<WhatsAppPreview />} />
