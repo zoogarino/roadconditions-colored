@@ -8,6 +8,9 @@ import { computeStatus } from "@/lib/lifecycle";
 interface WebPostCardProps {
   post: Post;
   onReport: (postId: string) => void;
+  /** Guest gate — when set, confirm/resolve/report ask the visitor to sign in. */
+  isGuest?: boolean;
+  onRequireSignIn?: (action: "confirm" | "resolve" | "report") => void;
 }
 
 const BoldRoad = ({ road }: { road: string }) => {
@@ -22,7 +25,7 @@ const BoldRoad = ({ road }: { road: string }) => {
   );
 };
 
-const WebPostCard = ({ post, onReport }: WebPostCardProps) => {
+const WebPostCard = ({ post, onReport, isGuest = false, onRequireSignIn }: WebPostCardProps) => {
   const [menuOpen, setMenuOpen] = useState(false);
   const [shareOpen, setShareOpen] = useState(false);
   const [confirmed, setConfirmed] = useState<null | "active" | "resolved">(null);
@@ -77,6 +80,10 @@ const WebPostCard = ({ post, onReport }: WebPostCardProps) => {
             <button
               onClick={() => {
                 setMenuOpen(false);
+                if (isGuest) {
+                  onRequireSignIn?.("report");
+                  return;
+                }
                 onReport(post.id);
               }}
               className="w-full flex items-center gap-2.5 px-3 py-2 text-[13px] text-destructive hover:bg-pgn-parchment"
@@ -180,6 +187,10 @@ const WebPostCard = ({ post, onReport }: WebPostCardProps) => {
           <div className="flex gap-2">
             <button
               onClick={() => {
+                if (isGuest) {
+                  onRequireSignIn?.("confirm");
+                  return;
+                }
                 setConfirmed("active");
                 toast.success("Thanks — marked still active.");
               }}
@@ -189,6 +200,10 @@ const WebPostCard = ({ post, onReport }: WebPostCardProps) => {
             </button>
             <button
               onClick={() => {
+                if (isGuest) {
+                  onRequireSignIn?.("resolve");
+                  return;
+                }
                 setConfirmed("resolved");
                 toast.success("Thanks — marked resolved.");
               }}
