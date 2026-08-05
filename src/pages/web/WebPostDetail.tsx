@@ -108,6 +108,16 @@ const WebPostDetail = () => {
     setConfirmDelete(true);
   };
 
+  /** Brief busy state so clicks never jump-cut straight to the end state. */
+  const withBusy = (kind: "resolve" | "confirm" | "reply", done: () => void) => {
+    if (busy) return;
+    setBusy(kind);
+    window.setTimeout(() => {
+      setBusy(null);
+      done();
+    }, 450);
+  };
+
   const submitReply = () => {
     if (isGuest) {
       setGuestAction("reply");
@@ -115,8 +125,10 @@ const WebPostDetail = () => {
     }
     const content = draft.trim();
     if (!content) return;
-    setExtraReplies(prev => [
-      ...prev,
+    withBusy("reply", () => {
+      setExtraReplies(prev => [
+        ...prev,
+
       {
         id: `new-${prev.length + 1}`,
         author: { name: "You", initials: "YO", color: "bg-pgn-navy" },
