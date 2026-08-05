@@ -1,9 +1,12 @@
 import { useEffect, useMemo, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { Plus } from "lucide-react";
 import { toast } from "sonner";
 import SiteHeader from "@/components/web/SiteHeader";
 import WebPostCard from "@/components/web/WebPostCard";
 import ReportModal, { type ReportTarget } from "@/components/web/ReportModal";
+import SignInPromptModal, { type GuestAction } from "@/components/web/SignInPromptModal";
+import { useWebAuthDemo } from "@/hooks/useWebAuthDemo";
 import { mockPosts } from "@/data/mockData";
 import { computeStatus, relevanceScore } from "@/lib/lifecycle";
 
@@ -13,8 +16,10 @@ interface RoadConditionsSiteProps {
 }
 
 const RoadConditionsSite = ({ empty = false }: RoadConditionsSiteProps) => {
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const navigate = useNavigate();
+  const { isLoggedIn, isGuest, toggle, setIsLoggedIn } = useWebAuthDemo();
   const [reportTarget, setReportTarget] = useState<ReportTarget | null>(null);
+  const [guestAction, setGuestAction] = useState<GuestAction | null>(null);
 
   useEffect(() => {
     document.title = "Road Conditions Namibia | Pocket Guide Namibia";
@@ -35,7 +40,7 @@ const RoadConditionsSite = ({ empty = false }: RoadConditionsSiteProps) => {
 
   return (
     <div className="min-h-screen" style={{ backgroundColor: "#FDF6EE" }}>
-      <SiteHeader isLoggedIn={isLoggedIn} onToggleAccount={() => setIsLoggedIn(v => !v)} />
+      <SiteHeader isLoggedIn={isLoggedIn} onToggleAccount={toggle} />
 
       <main className="mx-auto w-full max-w-[640px] px-4 py-8">
         <h1 className="text-xl font-bold text-pgn-navy mb-1">Road Conditions</h1>
@@ -60,7 +65,16 @@ const RoadConditionsSite = ({ empty = false }: RoadConditionsSiteProps) => {
             <p className="text-xs text-muted-foreground mb-5">
               No active road conditions reported right now.
             </p>
-            <button className="inline-flex items-center gap-1.5 h-10 px-5 rounded-full bg-primary text-pgn-navy text-sm font-semibold">
+            <button
+              onClick={() => {
+                if (isGuest) {
+                  setGuestAction("post");
+                  return;
+                }
+                navigate("/road-conditions/new");
+              }}
+              className="inline-flex items-center gap-1.5 h-10 px-5 rounded-full bg-primary text-pgn-navy text-sm font-semibold"
+            >
               <Plus size={15} /> Post Condition
             </button>
           </div>
@@ -71,11 +85,23 @@ const RoadConditionsSite = ({ empty = false }: RoadConditionsSiteProps) => {
                 key={post.id}
                 post={post}
                 onReport={id => setReportTarget({ id, kind: "post" })}
+                isGuest={isGuest}
+                onRequireSignIn={action => setGuestAction(action)}
               />
             ))}
           </div>
         )}
       </main>
+
+      <SignInPromptModal
+        action={guestAction}
+        onClose={() => setGuestAction(null)}
+        onSignIn={() => {
+          setIsLoggedIn(true);
+          setGuestAction(null);
+          toast.success("Signed in — you're all set.");
+        }}
+      />
 
       <ReportModal
         target={reportTarget}

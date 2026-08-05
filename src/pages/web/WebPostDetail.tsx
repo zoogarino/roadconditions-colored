@@ -16,6 +16,8 @@ import {
 import { toast } from "sonner";
 import SiteHeader from "@/components/web/SiteHeader";
 import ReportModal, { type ReportTarget } from "@/components/web/ReportModal";
+import SignInPromptModal, { type GuestAction } from "@/components/web/SignInPromptModal";
+import { useWebAuthDemo } from "@/hooks/useWebAuthDemo";
 import {
   mockPosts,
   conditionConfig,
@@ -41,7 +43,8 @@ const WebPostDetail = () => {
   const navigate = useNavigate();
   const post = mockPosts.find(p => p.id === slug) ?? mockPosts[1] ?? mockPosts[0];
 
-  const [isLoggedIn, setIsLoggedIn] = useState(true);
+  const { isLoggedIn, isGuest, toggle, setIsLoggedIn } = useWebAuthDemo();
+  const [guestAction, setGuestAction] = useState<GuestAction | null>(null);
   const [reportTarget, setReportTarget] = useState<ReportTarget | null>(null);
   const [menuOpen, setMenuOpen] = useState(false);
   const [shareOpen, setShareOpen] = useState(false);
@@ -99,6 +102,10 @@ const WebPostDetail = () => {
   };
 
   const submitReply = () => {
+    if (isGuest) {
+      setGuestAction("reply");
+      return;
+    }
     const content = draft.trim();
     if (!content) return;
     setExtraReplies(prev => [
@@ -116,7 +123,7 @@ const WebPostDetail = () => {
 
   return (
     <div className="min-h-screen" style={{ backgroundColor: "#FDF6EE" }}>
-      <SiteHeader isLoggedIn={isLoggedIn} onToggleAccount={() => setIsLoggedIn(v => !v)} />
+      <SiteHeader isLoggedIn={isLoggedIn} onToggleAccount={toggle} />
 
       <main className="mx-auto w-full max-w-[640px] px-4 py-8 space-y-4">
         {/* Post card */}
@@ -159,6 +166,10 @@ const WebPostDetail = () => {
                 <button
                   onClick={() => {
                     setMenuOpen(false);
+                    if (isGuest) {
+                      setGuestAction("report");
+                      return;
+                    }
                     setReportTarget({ id: post.id, kind: "post" });
                   }}
                   className="w-full flex items-center gap-2.5 px-3 py-2 text-[13px] text-destructive hover:bg-pgn-parchment"
@@ -289,6 +300,10 @@ const WebPostDetail = () => {
           {/* Persistent Mark Resolved */}
           <button
             onClick={() => {
+              if (isGuest) {
+                setGuestAction("resolve");
+                return;
+              }
               setResolvedNow(true);
               toast.success("Marked as resolved. Thanks for the update!");
             }}
@@ -311,6 +326,10 @@ const WebPostDetail = () => {
               <div className="flex gap-2">
                 <button
                   onClick={() => {
+                    if (isGuest) {
+                      setGuestAction("confirm");
+                      return;
+                    }
                     setConfirmedBanner(true);
                     toast.success("Thanks — marked still active.");
                   }}
@@ -320,6 +339,10 @@ const WebPostDetail = () => {
                 </button>
                 <button
                   onClick={() => {
+                    if (isGuest) {
+                      setGuestAction("resolve");
+                      return;
+                    }
                     setResolvedNow(true);
                     toast.success("Marked as resolved. Thanks for the update!");
                   }}
@@ -366,7 +389,13 @@ const WebPostDetail = () => {
                     <p className="text-[10px] text-muted-foreground">{r.timeAgo}</p>
                     <button
                       aria-label="Report reply"
-                      onClick={() => setReportTarget({ id: r.id, kind: "reply" })}
+                      onClick={() => {
+                        if (isGuest) {
+                          setGuestAction("report");
+                          return;
+                        }
+                        setReportTarget({ id: r.id, kind: "reply" });
+                      }}
                       className="ml-auto text-pgn-muted hover:text-destructive"
                     >
                       <Flag size={12} />
@@ -377,6 +406,10 @@ const WebPostDetail = () => {
                   </p>
                   <button
                     onClick={() => {
+                      if (isGuest) {
+                        setGuestAction("reply");
+                        return;
+                      }
                       setDraft(d => (d.startsWith(`@${r.author.name}`) ? d : `@${r.author.name} ${d}`.trim()));
                       inputRef.current?.focus();
                     }}
@@ -417,6 +450,16 @@ const WebPostDetail = () => {
           </div>
         </section>
       </main>
+
+      <SignInPromptModal
+        action={guestAction}
+        onClose={() => setGuestAction(null)}
+        onSignIn={() => {
+          setIsLoggedIn(true);
+          setGuestAction(null);
+          toast.success("Signed in — you're all set.");
+        }}
+      />
 
       <ReportModal
         target={reportTarget}
