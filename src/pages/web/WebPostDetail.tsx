@@ -20,6 +20,7 @@ import SignInPromptModal, { type GuestAction } from "@/components/web/SignInProm
 import { useWebAuthDemo } from "@/hooks/useWebAuthDemo";
 import {
   mockPosts,
+  CURRENT_USER_NAME,
   conditionConfig,
   severityConfig,
   directionConfig,
