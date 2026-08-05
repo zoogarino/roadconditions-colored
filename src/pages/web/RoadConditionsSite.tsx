@@ -29,6 +29,7 @@ const RoadConditionsSite = ({ empty = false }: RoadConditionsSiteProps) => {
     if (empty) return [];
     return mockPosts
       .filter(p => {
+        if (p.hiddenFromFeed) return false;
         const status = computeStatus(p);
         return status === "active" || status === "needs_confirmation";
       })
