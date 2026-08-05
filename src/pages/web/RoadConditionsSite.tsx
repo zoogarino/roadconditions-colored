@@ -1,25 +1,87 @@
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
+import { Plus } from "lucide-react";
+import { toast } from "sonner";
 import SiteHeader from "@/components/web/SiteHeader";
+import WebPostCard from "@/components/web/WebPostCard";
+import ReportModal, { type ReportTarget } from "@/components/web/ReportModal";
+import { mockPosts } from "@/data/mockData";
+import { computeStatus, relevanceScore } from "@/lib/lifecycle";
 
-const RoadConditionsSite = () => {
+interface RoadConditionsSiteProps {
+  /** Renders the empty-feed variant of the same page. */
+  empty?: boolean;
+}
+
+const RoadConditionsSite = ({ empty = false }: RoadConditionsSiteProps) => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [reportTarget, setReportTarget] = useState<ReportTarget | null>(null);
 
   useEffect(() => {
     document.title = "Road Conditions Namibia | Pocket Guide Namibia";
   }, []);
 
+  const posts = useMemo(() => {
+    if (empty) return [];
+    return mockPosts
+      .filter(p => {
+        const status = computeStatus(p);
+        return status === "active" || status === "needs_confirmation";
+      })
+      .sort((a, b) => {
+        if (!!b.isPinned !== !!a.isPinned) return b.isPinned ? 1 : -1;
+        return relevanceScore(b) - relevanceScore(a);
+      });
+  }, [empty]);
+
   return (
     <div className="min-h-screen" style={{ backgroundColor: "#FDF6EE" }}>
       <SiteHeader isLoggedIn={isLoggedIn} onToggleAccount={() => setIsLoggedIn(v => !v)} />
 
-      <main className="mx-auto max-w-5xl px-4 py-10">
-        <h1 className="text-2xl font-bold text-pgn-navy">Road Conditions</h1>
-        <p className="text-sm text-muted-foreground mt-2 max-w-md">
-          Navigation shell only — feed content comes in the next step. Scroll to see the sticky
-          header, tap search to expand it, and tap the account control to toggle guest / signed-in.
+      <main className="mx-auto w-full max-w-[640px] px-4 py-8">
+        <h1 className="text-xl font-bold text-pgn-navy mb-1">Road Conditions</h1>
+        <p className="text-xs text-muted-foreground mb-6">
+          Active reports from travellers across Namibia.
         </p>
-        <div className="h-[140vh]" />
+
+        {posts.length === 0 ? (
+          <div
+            className="bg-card border px-6 py-14 text-center"
+            style={{ borderRadius: 16, borderColor: "#E8D9C8", boxShadow: "0 4px 16px rgba(27, 63, 143, 0.08)" }}
+          >
+            <div
+              className="w-14 h-14 rounded-full mx-auto mb-4 flex items-center justify-center"
+              style={{ backgroundColor: "#FCE8E3" }}
+            >
+              <Plus size={24} style={{ color: "#D4854A" }} />
+            </div>
+            <p className="text-base font-bold text-pgn-navy mb-1">
+              Be the first to report a condition!
+            </p>
+            <p className="text-xs text-muted-foreground mb-5">
+              No active road conditions reported right now.
+            </p>
+            <button className="inline-flex items-center gap-1.5 h-10 px-5 rounded-full bg-primary text-pgn-navy text-sm font-semibold">
+              <Plus size={15} /> Post Condition
+            </button>
+          </div>
+        ) : (
+          <div className="space-y-4">
+            {posts.map(post => (
+              <WebPostCard
+                key={post.id}
+                post={post}
+                onReport={id => setReportTarget({ id, kind: "post" })}
+              />
+            ))}
+          </div>
+        )}
       </main>
+
+      <ReportModal
+        target={reportTarget}
+        onClose={() => setReportTarget(null)}
+        onSubmit={() => toast.success("Thanks for reporting. We'll review this.")}
+      />
     </div>
   );
 };
