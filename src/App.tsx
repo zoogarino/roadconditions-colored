@@ -25,6 +25,7 @@ const App = () => (
           <Route path="/" element={<Index />} />
           <Route path="/road-conditions" element={<RoadConditionsSite />} />
           <Route path="/road-conditions/empty" element={<RoadConditionsSite empty />} />
+          <Route path="/road-conditions/new" element={<WebCreatePost />} />
 
           <Route path="/road-conditions/post/:slug" element={<WebPostDetail />} />
           {/* Web Fallback View (unchanged shared-post landing page for non-app users) */}
