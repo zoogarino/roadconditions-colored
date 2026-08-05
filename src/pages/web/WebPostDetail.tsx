@@ -328,15 +328,19 @@ const WebPostDetail = () => {
                 setGuestAction("resolve");
                 return;
               }
-              setResolvedNow(true);
-              toast.success("Marked as resolved. Thanks for the update!");
+              withBusy("resolve", () => {
+                setResolvedNow(true);
+                toast.success("Marked as resolved. Thanks for the update!");
+              });
             }}
-            disabled={status === "resolved"}
-            className="w-full h-10 rounded-full border text-sm font-semibold text-pgn-navy bg-card disabled:opacity-50"
+            disabled={status === "resolved" || !!busy}
+            className="w-full h-10 rounded-full border text-sm font-semibold text-pgn-navy bg-card inline-flex items-center justify-center gap-2 hover:bg-pgn-sand hover:shadow-md transition-all disabled:opacity-50"
             style={{ borderColor: "#D4854A" }}
           >
+            {busy === "resolve" && <Loader2 size={14} className="animate-spin" />}
             {status === "resolved" ? "Resolved" : "Mark Resolved"}
           </button>
+
 
           {/* Needs Confirmation banner */}
           {showBanner && (
