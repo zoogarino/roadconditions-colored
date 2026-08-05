@@ -127,12 +127,8 @@ const WebPostDetail = () => {
       <SiteHeader isLoggedIn={isLoggedIn} onToggleAccount={toggle} />
 
       <main className="mx-auto w-full max-w-[640px] px-4 py-8 space-y-4">
-        <RouterLink
-          to="/road-conditions"
-          className="inline-block text-xs text-muted-foreground hover:text-primary"
-        >
-          ← Road Conditions
-        </RouterLink>
+        <Breadcrumb current={post.road} />
+
 
         {/* Post card */}
 
