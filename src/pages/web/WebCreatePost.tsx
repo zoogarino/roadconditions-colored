@@ -3,6 +3,8 @@ import { useNavigate } from "react-router-dom";
 import { toast } from "sonner";
 import SiteHeader from "@/components/web/SiteHeader";
 import GuidelinesGate from "@/components/web/GuidelinesGate";
+import SignInPromptModal from "@/components/web/SignInPromptModal";
+import { useWebAuthDemo } from "@/hooks/useWebAuthDemo";
 import {
   conditionConfig,
   conditionTypes,
@@ -22,7 +24,7 @@ const fieldStyle = { borderColor: "#E8D9C8", borderRadius: 12 };
 
 const WebCreatePost = () => {
   const navigate = useNavigate();
-  const [isLoggedIn, setIsLoggedIn] = useState(true);
+  const { isLoggedIn, isGuest, toggle, setIsLoggedIn } = useWebAuthDemo();
 
   const [showGuidelines, setShowGuidelines] = useState(
     () => localStorage.getItem(GUIDELINES_KEY) !== "true",
@@ -58,13 +60,14 @@ const WebCreatePost = () => {
 
   const submit = () => {
     if (!isValid) return;
+    if (isGuest) return;
     toast.success("Condition posted. Thanks for keeping travellers informed!");
     navigate("/road-conditions");
   };
 
   return (
     <div className="min-h-screen" style={{ backgroundColor: "#FDF6EE" }}>
-      <SiteHeader isLoggedIn={isLoggedIn} onToggleAccount={() => setIsLoggedIn(v => !v)} />
+      <SiteHeader isLoggedIn={isLoggedIn} onToggleAccount={toggle} />
 
       <main className="mx-auto w-full max-w-[640px] px-4 py-8">
         <h1 className="text-xl font-bold text-pgn-navy mb-1">Post a road condition</h1>
@@ -229,7 +232,16 @@ const WebCreatePost = () => {
         </div>
       </main>
 
-      {showGuidelines && (
+      <SignInPromptModal
+        action={isGuest ? "post" : null}
+        onClose={() => navigate("/road-conditions")}
+        onSignIn={() => {
+          setIsLoggedIn(true);
+          toast.success("Signed in — you're all set.");
+        }}
+      />
+
+      {!isGuest && showGuidelines && (
         <GuidelinesGate onAgree={acceptGuidelines} onDecline={() => navigate("/road-conditions")} />
       )}
     </div>
