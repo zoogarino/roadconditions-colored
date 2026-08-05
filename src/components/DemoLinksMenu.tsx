@@ -47,14 +47,14 @@ export const DemoLinksMenu = ({ onSelectState, states = [] }: DemoLinksMenuProps
       href: "/road-conditions",
     },
     {
-      label: "Your post — deletable (1 reply)",
-      desc: "Author-only trash icon visible, no edit affordance",
+      label: "Your post — not deletable (has replies)",
+      desc: "Delete click shows the blocked toast",
       href: "/road-conditions/post/own-1",
     },
     {
-      label: "Your post — not deletable (2+ replies)",
-      desc: "Delete click shows the blocked toast",
-      href: "/road-conditions/post/own-2",
+      label: "Your post — deletable (zero replies)",
+      desc: "Trash icon opens the delete confirmation dialog",
+      href: "/road-conditions/post/own-3",
     },
 
 
