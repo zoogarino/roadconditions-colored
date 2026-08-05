@@ -58,6 +58,8 @@ const WebPostDetail = () => {
   const [confirmedBanner, setConfirmedBanner] = useState(false);
   const [draft, setDraft] = useState("");
   const [extraReplies, setExtraReplies] = useState<Reply[]>([]);
+  const [busy, setBusy] = useState<null | "resolve" | "confirm" | "reply">(null);
+
   const inputRef = useRef<HTMLTextAreaElement>(null);
   const menuRef = useRef<HTMLDivElement>(null);
 
