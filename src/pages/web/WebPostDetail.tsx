@@ -128,17 +128,18 @@ const WebPostDetail = () => {
     withBusy("reply", () => {
       setExtraReplies(prev => [
         ...prev,
-
-      {
-        id: `new-${prev.length + 1}`,
-        author: { name: "You", initials: "YO", color: "bg-pgn-navy" },
-        content: content.slice(0, 280),
-        timeAgo: "Just now",
-      },
-    ]);
-    setDraft("");
-    toast.success("Reply posted");
+        {
+          id: `new-${prev.length + 1}`,
+          author: { name: "You", initials: "YO", color: "bg-pgn-navy" },
+          content: content.slice(0, 280),
+          timeAgo: "Just now",
+        },
+      ]);
+      setDraft("");
+      toast.success("Reply posted");
+    });
   };
+
 
   return (
     <div className="min-h-screen" style={{ backgroundColor: "#FDF6EE" }}>
