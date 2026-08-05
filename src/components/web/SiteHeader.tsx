@@ -61,17 +61,19 @@ const SiteHeader = ({ isLoggedIn = false, onToggleAccount }: SiteHeaderProps) =>
           )}
 
           {/* Post condition */}
-          <button
+          <Link
+            to="/road-conditions/new"
             className="hidden sm:flex items-center gap-1.5 h-10 px-4 rounded-full bg-primary text-pgn-navy text-sm font-semibold active:opacity-90 hover:shadow-md transition-shadow"
           >
             <Plus size={15} /> Post Condition
-          </button>
-          <button
+          </Link>
+          <Link
+            to="/road-conditions/new"
             aria-label="Post Condition"
             className="sm:hidden w-10 h-10 rounded-full bg-primary text-pgn-navy flex items-center justify-center"
           >
             <Plus size={17} />
-          </button>
+          </Link>
 
           {/* Account state */}
           {isLoggedIn ? (
