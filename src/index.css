@@ -106,7 +106,14 @@
   body {
     @apply bg-background text-foreground;
   }
+
+  /* Keyboard-visible focus ring in brand terracotta */
+  :where(a, button, input, textarea, select, summary, [role="button"], [tabindex]):focus-visible {
+    outline: 2px solid hsl(var(--pgn-terracotta));
+    outline-offset: 2px;
+  }
 }
+
 
 @layer utilities {
   .scrollbar-hide {
