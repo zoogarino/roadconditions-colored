@@ -144,8 +144,8 @@ const WebCreatePost = () => {
                   className="flex items-center gap-2.5 px-3 py-2.5 cursor-pointer border transition-colors"
                   style={{
                     borderRadius: 12,
-                    borderColor: severity === s ? "#D4854A" : "#E8D9C8",
-                    backgroundColor: severity === s ? "#FFFBF5" : "transparent",
+                    borderColor: severity === s ? "#EF4444" : "#E8D9C8",
+                    backgroundColor: severity === s ? "#FEF2F2" : "transparent",
                   }}
                 >
                   <input
@@ -153,7 +153,7 @@ const WebCreatePost = () => {
                     name="severity"
                     checked={severity === s}
                     onChange={() => setSeverity(s)}
-                    className="accent-primary"
+                    style={{ accentColor: "#EF4444" }}
                   />
                   <span className={`w-2 h-2 rounded-full ${severityConfig[s].dot}`} />
                   <span className={`text-[13px] font-semibold ${severityConfig[s].text}`}>
