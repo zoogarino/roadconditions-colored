@@ -223,7 +223,7 @@ const WebPostCard = ({ post, onReport, isGuest = false, onRequireSignIn }: WebPo
         <span className="flex items-center gap-1">
           <CheckCircle2 size={13} /> {post.confirmations ?? 0} confirmations
         </span>
-        <span className="ml-auto">{post.timeAgo}</span>
+
       </div>
     </article>
   );
