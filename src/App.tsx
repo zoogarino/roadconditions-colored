@@ -6,6 +6,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Index from "./pages/Index";
 import NotFound from "./pages/NotFound";
 import WebPostView from "./pages/WebPostView";
+import RoadConditionsSite from "./pages/web/RoadConditionsSite";
 import WhatsAppPreview from "./pages/previews/WhatsAppPreview";
 import FacebookPreview from "./pages/previews/FacebookPreview";
 import OGImagePreview from "./pages/previews/OGImagePreview";
@@ -20,7 +21,9 @@ const App = () => (
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<Index />} />
+          <Route path="/road-conditions" element={<RoadConditionsSite />} />
           <Route path="/road-conditions/post/:id" element={<WebPostView />} />
+
           <Route path="/previews/whatsapp" element={<WhatsAppPreview />} />
           <Route path="/previews/facebook" element={<FacebookPreview />} />
           <Route path="/previews/og-image" element={<OGImagePreview />} />
