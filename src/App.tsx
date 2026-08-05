@@ -8,6 +8,7 @@ import NotFound from "./pages/NotFound";
 import WebPostView from "./pages/WebPostView";
 import RoadConditionsSite from "./pages/web/RoadConditionsSite";
 import WebPostDetail from "./pages/web/WebPostDetail";
+import WebCreatePost from "./pages/web/WebCreatePost";
 import WhatsAppPreview from "./pages/previews/WhatsAppPreview";
 import FacebookPreview from "./pages/previews/FacebookPreview";
 import OGImagePreview from "./pages/previews/OGImagePreview";
