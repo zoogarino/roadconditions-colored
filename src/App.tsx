@@ -7,6 +7,7 @@ import Index from "./pages/Index";
 import NotFound from "./pages/NotFound";
 import WebPostView from "./pages/WebPostView";
 import RoadConditionsSite from "./pages/web/RoadConditionsSite";
+import WebPostDetail from "./pages/web/WebPostDetail";
 import WhatsAppPreview from "./pages/previews/WhatsAppPreview";
 import FacebookPreview from "./pages/previews/FacebookPreview";
 import OGImagePreview from "./pages/previews/OGImagePreview";
@@ -24,7 +25,9 @@ const App = () => (
           <Route path="/road-conditions" element={<RoadConditionsSite />} />
           <Route path="/road-conditions/empty" element={<RoadConditionsSite empty />} />
 
-          <Route path="/road-conditions/post/:id" element={<WebPostView />} />
+          <Route path="/road-conditions/post/:slug" element={<WebPostDetail />} />
+          {/* Web Fallback View (unchanged shared-post landing page for non-app users) */}
+          <Route path="/share/road-conditions/post/:id" element={<WebPostView />} />
 
           <Route path="/previews/whatsapp" element={<WhatsAppPreview />} />
           <Route path="/previews/facebook" element={<FacebookPreview />} />

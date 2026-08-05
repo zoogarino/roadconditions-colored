@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from "react";
+import { Link } from "react-router-dom";
 import { MapPin, MessageCircle, MoreHorizontal, CheckCircle2, Link2, Flag, Share2 } from "lucide-react";
 import { toast } from "sonner";
 import { conditionConfig, severityConfig, directionConfig, type Post } from "@/data/mockData";
@@ -145,9 +146,12 @@ const WebPostCard = ({ post, onReport }: WebPostCardProps) => {
       <div className="flex items-center gap-1.5 mb-2">
         <MapPin size={14} className="text-primary" />
         <h2 className="text-sm font-medium text-foreground">
-          <BoldRoad road={post.road} />
+          <Link to={`/road-conditions/post/${post.id}`} className="hover:text-primary">
+            <BoldRoad road={post.road} />
+          </Link>
         </h2>
       </div>
+
 
       <div className="flex items-center gap-2 mb-3 flex-wrap">
         <span className={`text-[11px] px-2.5 py-1 rounded-full font-semibold ${cond.bg} ${cond.text}`}>

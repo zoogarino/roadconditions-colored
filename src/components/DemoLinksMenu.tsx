@@ -29,8 +29,19 @@ export const DemoLinksMenu = ({ onSelectState, states = [] }: DemoLinksMenuProps
     {
       label: "Web fallback view",
       desc: "Shared post landing page (non-app users)",
+      href: `/share/road-conditions/post/${samplePostId}`,
+    },
+    {
+      label: "Web feed",
+      desc: "Full site feed with global nav",
+      href: "/road-conditions",
+    },
+    {
+      label: "Web post detail",
+      desc: "Full site post page with replies",
       href: `/road-conditions/post/${samplePostId}`,
     },
+
     {
       label: "WhatsApp link preview",
       desc: "How the share appears in WhatsApp",
