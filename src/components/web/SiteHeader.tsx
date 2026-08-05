@@ -44,10 +44,11 @@ const SiteHeader = ({ isLoggedIn = false, onToggleAccount }: SiteHeaderProps) =>
               <button
                 aria-label="Close search"
                 onClick={() => setSearchOpen(false)}
-                className="text-pgn-muted"
+                className="w-9 h-9 -mr-1.5 rounded-full flex items-center justify-center text-pgn-muted hover:bg-pgn-sand hover:text-pgn-navy transition-colors"
               >
                 <X size={15} />
               </button>
+
             </div>
           ) : (
             <button
