@@ -45,8 +45,13 @@ export interface Post {
   pinnedSeasonalUpdates?: number;
   pinnedTitle?: string;
   pinnedMiniReplies?: { name: string; timeAgo: string; content: string }[];
+  /** Prototype-only: exists for a detail-page variant, not listed in the feed. */
+  hiddenFromFeed?: boolean;
   replies: Reply[];
 }
+
+/** Prototype-only: display name of the signed-in demo user. */
+export const CURRENT_USER_NAME = 'You';
 
 export const conditionConfig: Record<ConditionType, { icon: string; label: string; bg: string; text: string }> = {
   flooding: { icon: '🌊', label: 'Flooding', bg: 'bg-blue-100', text: 'text-blue-700' },
