@@ -40,12 +40,14 @@ const ReportModal = ({ target, onClose, onSubmit }: ReportModalProps) => {
         style={{ borderRadius: 16, borderColor: "#E8D9C8", boxShadow: "0 8px 28px rgba(27, 63, 143, 0.16)" }}
       >
         <div className="flex items-start justify-between mb-1">
-          <h2 className="text-base font-bold text-pgn-navy">Report this post</h2>
+          <h2 className="text-base font-bold text-pgn-navy">
+            Report this {target.kind === "reply" ? "reply" : "post"}
+          </h2>
           <button aria-label="Close" onClick={close} className="text-pgn-muted">
             <X size={16} />
           </button>
         </div>
-        <p className="text-xs text-muted-foreground mb-4">Why are you reporting this post?</p>
+        <p className="text-xs text-muted-foreground mb-4">Why are you reporting this {target.kind === "reply" ? "reply" : "post"}?</p>
 
         <div className="space-y-1.5 mb-5">
           {REASONS.map(r => (
