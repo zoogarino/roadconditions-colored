@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useRef, useState } from "react";
-import { Link as RouterLink, useNavigate, useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
+
 import {
   MapPin,
   MessageCircle,
@@ -12,10 +13,13 @@ import {
   History,
   Send,
   X,
+  Loader2,
 } from "lucide-react";
 import { toast } from "sonner";
 import SiteHeader from "@/components/web/SiteHeader";
+import Breadcrumb from "@/components/web/Breadcrumb";
 import ReportModal, { type ReportTarget } from "@/components/web/ReportModal";
+
 import SignInPromptModal, { type GuestAction } from "@/components/web/SignInPromptModal";
 import { useWebAuthDemo } from "@/hooks/useWebAuthDemo";
 import {
@@ -54,6 +58,8 @@ const WebPostDetail = () => {
   const [confirmedBanner, setConfirmedBanner] = useState(false);
   const [draft, setDraft] = useState("");
   const [extraReplies, setExtraReplies] = useState<Reply[]>([]);
+  const [busy, setBusy] = useState<null | "resolve" | "confirm" | "reply">(null);
+
   const inputRef = useRef<HTMLTextAreaElement>(null);
   const menuRef = useRef<HTMLDivElement>(null);
 
@@ -102,6 +108,16 @@ const WebPostDetail = () => {
     setConfirmDelete(true);
   };
 
+  /** Brief busy state so clicks never jump-cut straight to the end state. */
+  const withBusy = (kind: "resolve" | "confirm" | "reply", done: () => void) => {
+    if (busy) return;
+    setBusy(kind);
+    window.setTimeout(() => {
+      setBusy(null);
+      done();
+    }, 450);
+  };
+
   const submitReply = () => {
     if (isGuest) {
       setGuestAction("reply");
@@ -109,30 +125,29 @@ const WebPostDetail = () => {
     }
     const content = draft.trim();
     if (!content) return;
-    setExtraReplies(prev => [
-      ...prev,
-      {
-        id: `new-${prev.length + 1}`,
-        author: { name: "You", initials: "YO", color: "bg-pgn-navy" },
-        content: content.slice(0, 280),
-        timeAgo: "Just now",
-      },
-    ]);
-    setDraft("");
-    toast.success("Reply posted");
+    withBusy("reply", () => {
+      setExtraReplies(prev => [
+        ...prev,
+        {
+          id: `new-${prev.length + 1}`,
+          author: { name: "You", initials: "YO", color: "bg-pgn-navy" },
+          content: content.slice(0, 280),
+          timeAgo: "Just now",
+        },
+      ]);
+      setDraft("");
+      toast.success("Reply posted");
+    });
   };
+
 
   return (
     <div className="min-h-screen" style={{ backgroundColor: "#FDF6EE" }}>
       <SiteHeader isLoggedIn={isLoggedIn} onToggleAccount={toggle} />
 
       <main className="mx-auto w-full max-w-[640px] px-4 py-8 space-y-4">
-        <RouterLink
-          to="/road-conditions"
-          className="inline-block text-xs text-muted-foreground hover:text-primary"
-        >
-          ← Road Conditions
-        </RouterLink>
+        <Breadcrumb current={post.road} />
+
 
         {/* Post card */}
 
@@ -140,12 +155,12 @@ const WebPostDetail = () => {
           className="bg-card p-5 border relative"
           style={{ borderRadius: 16, borderColor: "#E8D9C8", boxShadow: "0 4px 16px rgba(27, 63, 143, 0.10)" }}
         >
-          <div ref={menuRef} className="absolute top-4 right-4 flex items-center gap-1">
+          <div ref={menuRef} className="absolute top-3 right-3 flex items-center gap-1">
             {isAuthor && (
               <button
                 aria-label="Delete post"
                 onClick={handleDelete}
-                className="w-8 h-8 rounded-full flex items-center justify-center text-destructive hover:bg-pgn-parchment"
+                className="w-10 h-10 rounded-full flex items-center justify-center text-destructive hover:bg-pgn-sand transition-colors"
               >
                 <Trash2 size={16} />
               </button>
@@ -156,14 +171,15 @@ const WebPostDetail = () => {
                 setMenuOpen(v => !v);
                 setShareOpen(false);
               }}
-              className="w-8 h-8 rounded-full flex items-center justify-center text-pgn-muted hover:bg-pgn-parchment"
+              className="w-10 h-10 rounded-full flex items-center justify-center text-pgn-muted hover:bg-pgn-sand hover:text-pgn-navy transition-colors"
             >
               <MoreHorizontal size={18} />
             </button>
 
+
             {menuOpen && !shareOpen && (
               <div
-                className="absolute right-0 top-9 w-44 bg-card border py-1 z-20"
+                className="absolute right-0 top-11 w-44 bg-card border py-1 z-20"
                 style={{ borderRadius: 12, borderColor: "#E8D9C8", boxShadow: "0 6px 20px rgba(27, 63, 143, 0.14)" }}
               >
                 <button
@@ -190,7 +206,7 @@ const WebPostDetail = () => {
 
             {shareOpen && (
               <div
-                className="absolute right-0 top-9 w-44 bg-card border py-1 z-20"
+                className="absolute right-0 top-11 w-44 bg-card border py-1 z-20"
                 style={{ borderRadius: 12, borderColor: "#E8D9C8", boxShadow: "0 6px 20px rgba(27, 63, 143, 0.14)" }}
               >
                 <button
@@ -313,15 +329,19 @@ const WebPostDetail = () => {
                 setGuestAction("resolve");
                 return;
               }
-              setResolvedNow(true);
-              toast.success("Marked as resolved. Thanks for the update!");
+              withBusy("resolve", () => {
+                setResolvedNow(true);
+                toast.success("Marked as resolved. Thanks for the update!");
+              });
             }}
-            disabled={status === "resolved"}
-            className="w-full h-10 rounded-full border text-sm font-semibold text-pgn-navy bg-card disabled:opacity-50"
+            disabled={status === "resolved" || !!busy}
+            className="w-full h-10 rounded-full border text-sm font-semibold text-pgn-navy bg-card inline-flex items-center justify-center gap-2 hover:bg-pgn-sand hover:shadow-md transition-all disabled:opacity-50"
             style={{ borderColor: "#D4854A" }}
           >
+            {busy === "resolve" && <Loader2 size={14} className="animate-spin" />}
             {status === "resolved" ? "Resolved" : "Mark Resolved"}
           </button>
+
 
           {/* Needs Confirmation banner */}
           {showBanner && (
@@ -334,31 +354,40 @@ const WebPostDetail = () => {
               </p>
               <div className="flex gap-2">
                 <button
+                  disabled={!!busy}
                   onClick={() => {
                     if (isGuest) {
                       setGuestAction("confirm");
                       return;
                     }
-                    setConfirmedBanner(true);
-                    toast.success("Thanks — marked still active.");
+                    withBusy("confirm", () => {
+                      setConfirmedBanner(true);
+                      toast.success("Thanks — marked still active.");
+                    });
                   }}
-                  className="h-8 px-3 rounded-full bg-primary text-pgn-navy text-[11px] font-semibold"
+                  className="h-8 px-3 rounded-full bg-primary text-pgn-navy text-[11px] font-semibold inline-flex items-center gap-1.5 hover:brightness-95 hover:shadow-sm transition-all disabled:opacity-60"
                 >
+                  {busy === "confirm" && <Loader2 size={11} className="animate-spin" />}
                   Yes, still active
                 </button>
                 <button
+                  disabled={!!busy}
                   onClick={() => {
                     if (isGuest) {
                       setGuestAction("resolve");
                       return;
                     }
-                    setResolvedNow(true);
-                    toast.success("Marked as resolved. Thanks for the update!");
+                    withBusy("resolve", () => {
+                      setResolvedNow(true);
+                      toast.success("Marked as resolved. Thanks for the update!");
+                    });
                   }}
-                  className="h-8 px-3 rounded-full border text-[11px] font-semibold text-pgn-navy bg-card"
+                  className="h-8 px-3 rounded-full border text-[11px] font-semibold text-pgn-navy bg-card inline-flex items-center gap-1.5 hover:bg-card/60 hover:shadow-sm transition-all disabled:opacity-60"
                   style={{ borderColor: "#E8D9C8" }}
                 >
+                  {busy === "resolve" && <Loader2 size={11} className="animate-spin" />}
                   Resolved
+
                 </button>
               </div>
             </div>
@@ -405,10 +434,11 @@ const WebPostDetail = () => {
                         }
                         setReportTarget({ id: r.id, kind: "reply" });
                       }}
-                      className="ml-auto text-pgn-muted hover:text-destructive"
+                      className="ml-auto w-9 h-9 -my-2 rounded-full flex items-center justify-center text-pgn-muted hover:bg-pgn-sand hover:text-destructive transition-colors"
                     >
                       <Flag size={12} />
                     </button>
+
                   </div>
                   <p className="text-xs text-foreground/85 leading-relaxed mt-0.5">
                     {r.content.slice(0, 280)}
@@ -422,7 +452,7 @@ const WebPostDetail = () => {
                       setDraft(d => (d.startsWith(`@${r.author.name}`) ? d : `@${r.author.name} ${d}`.trim()));
                       inputRef.current?.focus();
                     }}
-                    className="text-[11px] font-semibold text-pgn-blue mt-1"
+                    className="text-[11px] font-semibold text-pgn-blue mt-1 rounded-sm hover:underline underline-offset-2 hover:text-pgn-navy transition-colors"
                   >
                     Reply
                   </button>
@@ -449,11 +479,12 @@ const WebPostDetail = () => {
               <button
                 aria-label="Post reply"
                 onClick={submitReply}
-                disabled={!draft.trim()}
-                className="w-9 h-9 rounded-full bg-primary text-pgn-navy flex items-center justify-center disabled:opacity-40"
+                disabled={!draft.trim() || !!busy}
+                className="w-9 h-9 rounded-full bg-primary text-pgn-navy flex items-center justify-center hover:brightness-95 hover:shadow-md transition-all disabled:opacity-40"
               >
-                <Send size={15} />
+                {busy === "reply" ? <Loader2 size={15} className="animate-spin" /> : <Send size={15} />}
               </button>
+
             </div>
             <p className="text-[10px] text-muted-foreground text-right mt-1">{draft.length}/280</p>
           </div>
@@ -485,7 +516,11 @@ const WebPostDetail = () => {
           >
             <div className="flex items-start justify-between mb-1">
               <h2 className="text-base font-bold text-pgn-navy">Delete this post?</h2>
-              <button aria-label="Close" onClick={() => setConfirmDelete(false)} className="text-pgn-muted">
+              <button
+                aria-label="Close"
+                onClick={() => setConfirmDelete(false)}
+                className="w-9 h-9 -mt-1 -mr-1 rounded-full flex items-center justify-center text-pgn-muted hover:bg-pgn-sand hover:text-pgn-navy transition-colors"
+              >
                 <X size={16} />
               </button>
             </div>
@@ -493,7 +528,7 @@ const WebPostDetail = () => {
             <div className="flex gap-2.5">
               <button
                 onClick={() => setConfirmDelete(false)}
-                className="flex-1 h-10 rounded-full border text-sm font-semibold text-pgn-navy"
+                className="flex-1 h-10 rounded-full border text-sm font-semibold text-pgn-navy hover:brightness-95 hover:shadow-sm transition-all"
                 style={{ borderColor: "#E8D9C8", backgroundColor: "#F5ECD7" }}
               >
                 Cancel
@@ -504,8 +539,9 @@ const WebPostDetail = () => {
                   toast.success("Post deleted");
                   navigate("/road-conditions");
                 }}
-                className="flex-1 h-10 rounded-full bg-destructive text-white text-sm font-semibold"
+                className="flex-1 h-10 rounded-full bg-destructive text-white text-sm font-semibold hover:brightness-95 hover:shadow-md transition-all"
               >
+
                 Delete
               </button>
             </div>

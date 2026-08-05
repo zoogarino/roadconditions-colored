@@ -43,9 +43,14 @@ const ReportModal = ({ target, onClose, onSubmit }: ReportModalProps) => {
           <h2 className="text-base font-bold text-pgn-navy">
             Report this {target.kind === "reply" ? "reply" : "post"}
           </h2>
-          <button aria-label="Close" onClick={close} className="text-pgn-muted">
+          <button
+            aria-label="Close"
+            onClick={close}
+            className="w-9 h-9 -mt-1 -mr-1 rounded-full flex items-center justify-center text-pgn-muted hover:bg-pgn-sand hover:text-pgn-navy transition-colors"
+          >
             <X size={16} />
           </button>
+
         </div>
         <p className="text-xs text-muted-foreground mb-4">Why are you reporting this {target.kind === "reply" ? "reply" : "post"}?</p>
 
@@ -74,7 +79,7 @@ const ReportModal = ({ target, onClose, onSubmit }: ReportModalProps) => {
         <div className="flex gap-2.5">
           <button
             onClick={close}
-            className="flex-1 h-10 rounded-full border text-sm font-semibold text-pgn-navy"
+            className="flex-1 h-10 rounded-full border text-sm font-semibold text-pgn-navy hover:brightness-95 hover:shadow-sm transition-all"
             style={{ borderColor: "#E8D9C8", backgroundColor: "#F5ECD7" }}
           >
             Cancel
@@ -85,11 +90,12 @@ const ReportModal = ({ target, onClose, onSubmit }: ReportModalProps) => {
               onSubmit(target, reason!);
               close();
             }}
-            className="flex-1 h-10 rounded-full bg-primary text-pgn-navy text-sm font-semibold disabled:opacity-40 disabled:cursor-not-allowed"
+            className="flex-1 h-10 rounded-full bg-primary text-pgn-navy text-sm font-semibold hover:brightness-95 hover:shadow-md transition-all disabled:opacity-40 disabled:cursor-not-allowed"
           >
             Submit Report
           </button>
         </div>
+
       </div>
     </div>
   );
