@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useRef, useState } from "react";
-import { Link as RouterLink, useNavigate, useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
+
 import {
   MapPin,
   MessageCircle,
@@ -12,10 +13,13 @@ import {
   History,
   Send,
   X,
+  Loader2,
 } from "lucide-react";
 import { toast } from "sonner";
 import SiteHeader from "@/components/web/SiteHeader";
+import Breadcrumb from "@/components/web/Breadcrumb";
 import ReportModal, { type ReportTarget } from "@/components/web/ReportModal";
+
 import SignInPromptModal, { type GuestAction } from "@/components/web/SignInPromptModal";
 import { useWebAuthDemo } from "@/hooks/useWebAuthDemo";
 import {
