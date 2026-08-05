@@ -335,8 +335,8 @@ const WebPostDetail = () => {
               });
             }}
             disabled={status === "resolved" || !!busy}
-            className="w-full h-10 rounded-full border text-sm font-semibold text-pgn-navy bg-card inline-flex items-center justify-center gap-2 hover:bg-pgn-sand hover:shadow-md transition-all disabled:opacity-50"
-            style={{ borderColor: "#D4854A" }}
+            className="w-full h-10 rounded-full border text-sm font-semibold bg-card inline-flex items-center justify-center gap-2 hover:shadow-md transition-all disabled:opacity-50"
+            style={{ borderColor: "#10B981", color: "#10B981" }}
           >
             {busy === "resolve" && <Loader2 size={14} className="animate-spin" />}
             {status === "resolved" ? "Resolved" : "Mark Resolved"}
@@ -365,7 +365,8 @@ const WebPostDetail = () => {
                       toast.success("Thanks — marked still active.");
                     });
                   }}
-                  className="h-8 px-3 rounded-full bg-primary text-pgn-navy text-[11px] font-semibold inline-flex items-center gap-1.5 hover:brightness-95 hover:shadow-sm transition-all disabled:opacity-60"
+                  className="h-8 px-3 rounded-full border text-[11px] font-semibold bg-card inline-flex items-center gap-1.5 hover:bg-pgn-sand hover:shadow-sm transition-all disabled:opacity-60"
+                  style={{ borderColor: "#E8D9C8", color: "#3D3530" }}
                 >
                   {busy === "confirm" && <Loader2 size={11} className="animate-spin" />}
                   Yes, still active
@@ -382,8 +383,8 @@ const WebPostDetail = () => {
                       toast.success("Marked as resolved. Thanks for the update!");
                     });
                   }}
-                  className="h-8 px-3 rounded-full border text-[11px] font-semibold text-pgn-navy bg-card inline-flex items-center gap-1.5 hover:bg-card/60 hover:shadow-sm transition-all disabled:opacity-60"
-                  style={{ borderColor: "#E8D9C8" }}
+                  className="h-8 px-3 rounded-full text-[11px] font-semibold inline-flex items-center gap-1.5 hover:brightness-95 hover:shadow-sm transition-all disabled:opacity-60"
+                  style={{ backgroundColor: "#10B981", color: "#FFFFFF" }}
                 >
                   {busy === "resolve" && <Loader2 size={11} className="animate-spin" />}
                   Resolved
