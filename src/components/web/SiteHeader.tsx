@@ -71,7 +71,7 @@ const SiteHeader = ({ isLoggedIn = false, onToggleAccount }: SiteHeaderProps) =>
           <Link
             to="/road-conditions/new"
             aria-label="Post Condition"
-            className="sm:hidden w-10 h-10 rounded-full bg-primary text-pgn-navy flex items-center justify-center"
+            className="sm:hidden w-10 h-10 rounded-full bg-primary text-pgn-navy flex items-center justify-center hover:brightness-95 transition-all"
           >
             <Plus size={17} />
           </Link>
@@ -81,7 +81,7 @@ const SiteHeader = ({ isLoggedIn = false, onToggleAccount }: SiteHeaderProps) =>
             <button
               onClick={onToggleAccount}
               aria-label="Account"
-              className="w-10 h-10 rounded-full flex items-center justify-center text-xs font-bold text-white shrink-0"
+              className="w-10 h-10 rounded-full flex items-center justify-center text-xs font-bold text-white shrink-0 hover:brightness-110 hover:shadow-md transition-all"
               style={{ backgroundColor: "#1B3F8F" }}
             >
               JM
@@ -89,11 +89,12 @@ const SiteHeader = ({ isLoggedIn = false, onToggleAccount }: SiteHeaderProps) =>
           ) : (
             <button
               onClick={onToggleAccount}
-              className="h-10 px-3 text-sm font-semibold text-pgn-blue shrink-0"
+              className="h-10 px-3 rounded-full text-sm font-semibold text-pgn-blue shrink-0 hover:underline underline-offset-2 hover:text-pgn-navy transition-colors"
             >
               Sign In
             </button>
           )}
+
         </div>
       </div>
     </header>
