@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useRef, useState } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { Link as RouterLink, useNavigate, useParams } from "react-router-dom";
 import {
   MapPin,
   MessageCircle,
@@ -127,7 +127,15 @@ const WebPostDetail = () => {
       <SiteHeader isLoggedIn={isLoggedIn} onToggleAccount={toggle} />
 
       <main className="mx-auto w-full max-w-[640px] px-4 py-8 space-y-4">
+        <RouterLink
+          to="/road-conditions"
+          className="inline-block text-xs text-muted-foreground hover:text-primary"
+        >
+          ← Road Conditions
+        </RouterLink>
+
         {/* Post card */}
+
         <article
           className="bg-card p-5 border relative"
           style={{ borderRadius: 16, borderColor: "#E8D9C8", boxShadow: "0 4px 16px rgba(27, 63, 143, 0.10)" }}
