@@ -155,12 +155,12 @@ const WebPostDetail = () => {
           className="bg-card p-5 border relative"
           style={{ borderRadius: 16, borderColor: "#E8D9C8", boxShadow: "0 4px 16px rgba(27, 63, 143, 0.10)" }}
         >
-          <div ref={menuRef} className="absolute top-4 right-4 flex items-center gap-1">
+          <div ref={menuRef} className="absolute top-3 right-3 flex items-center gap-1">
             {isAuthor && (
               <button
                 aria-label="Delete post"
                 onClick={handleDelete}
-                className="w-8 h-8 rounded-full flex items-center justify-center text-destructive hover:bg-pgn-parchment"
+                className="w-10 h-10 rounded-full flex items-center justify-center text-destructive hover:bg-pgn-sand transition-colors"
               >
                 <Trash2 size={16} />
               </button>
@@ -171,10 +171,11 @@ const WebPostDetail = () => {
                 setMenuOpen(v => !v);
                 setShareOpen(false);
               }}
-              className="w-8 h-8 rounded-full flex items-center justify-center text-pgn-muted hover:bg-pgn-parchment"
+              className="w-10 h-10 rounded-full flex items-center justify-center text-pgn-muted hover:bg-pgn-sand hover:text-pgn-navy transition-colors"
             >
               <MoreHorizontal size={18} />
             </button>
+
 
             {menuOpen && !shareOpen && (
               <div
