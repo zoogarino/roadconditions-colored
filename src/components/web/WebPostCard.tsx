@@ -222,7 +222,8 @@ const WebPostCard = ({ post, onReport, isGuest = false, onRequireSignIn }: WebPo
                   toast.success("Thanks — marked still active.");
                 });
               }}
-              className="h-8 px-3 rounded-full bg-primary text-pgn-navy text-[11px] font-semibold inline-flex items-center gap-1.5 hover:brightness-95 hover:shadow-sm transition-all disabled:opacity-60"
+              className="h-8 px-3 rounded-full border text-[11px] font-semibold bg-card inline-flex items-center gap-1.5 hover:bg-pgn-sand hover:shadow-sm transition-all disabled:opacity-60"
+              style={{ borderColor: "#E8D9C8", color: "#3D3530" }}
             >
               {busy === "active" && <Loader2 size={11} className="animate-spin" />}
               Yes, still active
@@ -239,8 +240,8 @@ const WebPostCard = ({ post, onReport, isGuest = false, onRequireSignIn }: WebPo
                   toast.success("Thanks — marked resolved.");
                 });
               }}
-              className="h-8 px-3 rounded-full border text-[11px] font-semibold text-pgn-navy bg-card inline-flex items-center gap-1.5 hover:bg-pgn-sand hover:shadow-sm transition-all disabled:opacity-60"
-              style={{ borderColor: "#E8D9C8" }}
+              className="h-8 px-3 rounded-full text-[11px] font-semibold inline-flex items-center gap-1.5 hover:brightness-95 hover:shadow-sm transition-all disabled:opacity-60"
+              style={{ backgroundColor: "#10B981", color: "#FFFFFF" }}
             >
               {busy === "resolved" && <Loader2 size={11} className="animate-spin" />}
               Resolved

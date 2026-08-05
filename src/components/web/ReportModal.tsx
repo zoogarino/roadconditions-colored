@@ -60,8 +60,8 @@ const ReportModal = ({ target, onClose, onSubmit }: ReportModalProps) => {
               key={r}
               className="flex items-center gap-2.5 px-3 py-2.5 rounded-lg cursor-pointer border transition-colors"
               style={{
-                borderColor: reason === r ? "#D4854A" : "#E8D9C8",
-                backgroundColor: reason === r ? "#FFFBF5" : "transparent",
+                borderColor: reason === r ? "#EF4444" : "#E8D9C8",
+                backgroundColor: reason === r ? "#FEF2F2" : "transparent",
               }}
             >
               <input
@@ -69,9 +69,9 @@ const ReportModal = ({ target, onClose, onSubmit }: ReportModalProps) => {
                 name={`report-${target.id}`}
                 checked={reason === r}
                 onChange={() => setReason(r)}
-                className="accent-primary"
+                style={{ accentColor: "#EF4444" }}
               />
-              <span className="text-[13px] text-foreground">{r}</span>
+              <span className="text-[13px]" style={{ color: "#3D3530" }}>{r}</span>
             </label>
           ))}
         </div>
