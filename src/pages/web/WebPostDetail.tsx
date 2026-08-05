@@ -20,6 +20,7 @@ import SignInPromptModal, { type GuestAction } from "@/components/web/SignInProm
 import { useWebAuthDemo } from "@/hooks/useWebAuthDemo";
 import {
   mockPosts,
+  CURRENT_USER_NAME,
   conditionConfig,
   severityConfig,
   directionConfig,
@@ -83,7 +84,7 @@ const WebPostDetail = () => {
     [post, extraReplies],
   );
   const showBanner = computed === "needs_confirmation" && !confirmedBanner && !resolvedNow;
-  const isAuthor = isLoggedIn;
+  const isAuthor = isLoggedIn && post.author.name === CURRENT_USER_NAME;
   const history = getRoadHistory(mockPosts, post);
   const showHistory = hasRelatedHistory(mockPosts, post);
 

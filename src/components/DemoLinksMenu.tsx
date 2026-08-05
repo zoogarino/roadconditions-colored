@@ -41,6 +41,22 @@ export const DemoLinksMenu = ({ onSelectState, states = [] }: DemoLinksMenuProps
       desc: "Full site post page with replies",
       href: `/road-conditions/post/${samplePostId}`,
     },
+    {
+      label: "Feed — includes your own post",
+      desc: "Populated web feed with a post authored by you",
+      href: "/road-conditions",
+    },
+    {
+      label: "Your post — deletable (1 reply)",
+      desc: "Author-only trash icon visible, no edit affordance",
+      href: "/road-conditions/post/own-1",
+    },
+    {
+      label: "Your post — not deletable (2+ replies)",
+      desc: "Delete click shows the blocked toast",
+      href: "/road-conditions/post/own-2",
+    },
+
 
     {
       label: "WhatsApp link preview",
