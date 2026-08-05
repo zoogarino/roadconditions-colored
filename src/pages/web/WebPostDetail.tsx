@@ -353,31 +353,40 @@ const WebPostDetail = () => {
               </p>
               <div className="flex gap-2">
                 <button
+                  disabled={!!busy}
                   onClick={() => {
                     if (isGuest) {
                       setGuestAction("confirm");
                       return;
                     }
-                    setConfirmedBanner(true);
-                    toast.success("Thanks — marked still active.");
+                    withBusy("confirm", () => {
+                      setConfirmedBanner(true);
+                      toast.success("Thanks — marked still active.");
+                    });
                   }}
-                  className="h-8 px-3 rounded-full bg-primary text-pgn-navy text-[11px] font-semibold"
+                  className="h-8 px-3 rounded-full bg-primary text-pgn-navy text-[11px] font-semibold inline-flex items-center gap-1.5 hover:brightness-95 hover:shadow-sm transition-all disabled:opacity-60"
                 >
+                  {busy === "confirm" && <Loader2 size={11} className="animate-spin" />}
                   Yes, still active
                 </button>
                 <button
+                  disabled={!!busy}
                   onClick={() => {
                     if (isGuest) {
                       setGuestAction("resolve");
                       return;
                     }
-                    setResolvedNow(true);
-                    toast.success("Marked as resolved. Thanks for the update!");
+                    withBusy("resolve", () => {
+                      setResolvedNow(true);
+                      toast.success("Marked as resolved. Thanks for the update!");
+                    });
                   }}
-                  className="h-8 px-3 rounded-full border text-[11px] font-semibold text-pgn-navy bg-card"
+                  className="h-8 px-3 rounded-full border text-[11px] font-semibold text-pgn-navy bg-card inline-flex items-center gap-1.5 hover:bg-card/60 hover:shadow-sm transition-all disabled:opacity-60"
                   style={{ borderColor: "#E8D9C8" }}
                 >
+                  {busy === "resolve" && <Loader2 size={11} className="animate-spin" />}
                   Resolved
+
                 </button>
               </div>
             </div>
