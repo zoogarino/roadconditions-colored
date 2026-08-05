@@ -122,7 +122,7 @@ export const mockPosts: Post[] = [
     daysOld: 2,
     replyCount: 5,
     status: 'active',
-    confirmations: 0,
+    confirmations: 3,
     replies: [
       {
         id: 'r1',
