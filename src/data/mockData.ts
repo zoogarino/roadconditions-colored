@@ -391,6 +391,64 @@ export const mockPosts: Post[] = [
     status: 'archived',
     replies: [],
   },
+  // --- Prototype: posts authored by the signed-in user (ownership testing) ---
+  {
+    id: 'own-1',
+    road: 'D1982 near Aus',
+    roadKey: 'D1982',
+    location: 'Aus, Karas Region',
+    conditionType: 'wildlife',
+    severity: 'minor',
+    direction: 'both',
+    description:
+      'Spotted a small group of oryx crossing near the old railway bridge. Slow down, but no need to stop.',
+    author: { name: CURRENT_USER_NAME, initials: 'YO', color: 'bg-pgn-navy' },
+    timeAgo: '3 hours ago',
+    daysOld: 0,
+    replyCount: 1,
+    status: 'active',
+    confirmations: 1,
+    replies: [
+      {
+        id: 'own-1-r1',
+        author: { name: 'Sarah K.', initials: 'SK', color: 'bg-purple-500' },
+        content: 'Thanks for the heads up, driving that way tomorrow',
+        timeAgo: '1 hour ago',
+      },
+    ],
+  },
+  {
+    id: 'own-2',
+    road: 'D1982 near Aus',
+    roadKey: 'D1982',
+    location: 'Aus, Karas Region',
+    conditionType: 'wildlife',
+    severity: 'minor',
+    direction: 'both',
+    description:
+      'Spotted a small group of oryx crossing near the old railway bridge. Slow down, but no need to stop.',
+    author: { name: CURRENT_USER_NAME, initials: 'YO', color: 'bg-pgn-navy' },
+    timeAgo: '3 hours ago',
+    daysOld: 0,
+    replyCount: 2,
+    status: 'active',
+    confirmations: 1,
+    hiddenFromFeed: true,
+    replies: [
+      {
+        id: 'own-2-r1',
+        author: { name: 'Sarah K.', initials: 'SK', color: 'bg-purple-500' },
+        content: 'Thanks for the heads up, driving that way tomorrow',
+        timeAgo: '1 hour ago',
+      },
+      {
+        id: 'own-2-r2',
+        author: { name: 'Mike Thompson', initials: 'MT', color: 'bg-orange-500' },
+        content: 'Saw them again this afternoon, same spot near the bridge.',
+        timeAgo: '20 minutes ago',
+      },
+    ],
+  },
 ];
 
 export const searchSuggestions = [
