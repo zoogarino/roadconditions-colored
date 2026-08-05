@@ -179,7 +179,7 @@ const WebPostDetail = () => {
 
             {menuOpen && !shareOpen && (
               <div
-                className="absolute right-0 top-9 w-44 bg-card border py-1 z-20"
+                className="absolute right-0 top-11 w-44 bg-card border py-1 z-20"
                 style={{ borderRadius: 12, borderColor: "#E8D9C8", boxShadow: "0 6px 20px rgba(27, 63, 143, 0.14)" }}
               >
                 <button
@@ -206,7 +206,7 @@ const WebPostDetail = () => {
 
             {shareOpen && (
               <div
-                className="absolute right-0 top-9 w-44 bg-card border py-1 z-20"
+                className="absolute right-0 top-11 w-44 bg-card border py-1 z-20"
                 style={{ borderRadius: 12, borderColor: "#E8D9C8", boxShadow: "0 6px 20px rgba(27, 63, 143, 0.14)" }}
               >
                 <button
