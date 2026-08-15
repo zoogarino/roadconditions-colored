@@ -48,11 +48,9 @@ const RoadConditionsSite = ({ empty = false }: RoadConditionsSiteProps) => {
 
       <main className="mx-auto w-full max-w-[640px] px-4 py-8">
         <h1 className="text-xl font-bold text-pgn-navy mb-1">Road Conditions</h1>
-        <p className="text-xs text-muted-foreground mb-6">
-          Active reports from travellers across Namibia.
-        </p>
 
         {posts.length === 0 ? (
+
           <div
             className="bg-card border px-6 py-14 text-center"
             style={{ borderRadius: 16, borderColor: "#E8D9C8", boxShadow: "0 4px 16px rgba(27, 63, 143, 0.08)" }}
