@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { Plus } from "lucide-react";
+import { Plus, X, Search, MessageSquare } from "lucide-react";
 import { toast } from "sonner";
 import SiteHeader from "@/components/web/SiteHeader";
 import WebPostCard from "@/components/web/WebPostCard";
@@ -9,6 +9,7 @@ import SignInPromptModal, { type GuestAction } from "@/components/web/SignInProm
 import { useWebAuthDemo } from "@/hooks/useWebAuthDemo";
 import { mockPosts } from "@/data/mockData";
 import { computeStatus, relevanceScore } from "@/lib/lifecycle";
+
 
 interface RoadConditionsSiteProps {
   /** Renders the empty-feed variant of the same page. */
