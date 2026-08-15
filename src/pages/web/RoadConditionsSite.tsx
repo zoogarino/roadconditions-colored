@@ -21,6 +21,8 @@ const RoadConditionsSite = ({ empty = false }: RoadConditionsSiteProps) => {
   const { isLoggedIn, isGuest, toggle, setIsLoggedIn } = useWebAuthDemo();
   const [reportTarget, setReportTarget] = useState<ReportTarget | null>(null);
   const [guestAction, setGuestAction] = useState<GuestAction | null>(null);
+  const [introDismissed, setIntroDismissed] = useState(false);
+
 
   useEffect(() => {
     document.title = "Road Conditions Namibia | Pocket Guide Namibia";
