@@ -47,7 +47,18 @@ const RoadConditionsSite = ({ empty = false }: RoadConditionsSiteProps) => {
       <SiteHeader isLoggedIn={isLoggedIn} onToggleAccount={toggle} />
 
       <main className="mx-auto w-full max-w-[640px] px-4 py-8">
-        <h1 className="text-xl font-bold text-pgn-navy mb-1">Road Conditions</h1>
+        <div className="flex items-center gap-3 mb-1">
+          <div
+            className="w-9 h-9 rounded-lg flex items-center justify-center shrink-0"
+            style={{ backgroundColor: "#D4854A" }}
+          >
+            <MapPin size={18} color="#FFFFFF" strokeWidth={2} />
+          </div>
+          <h1 className="text-xl font-bold text-pgn-navy">Road Conditions</h1>
+        </div>
+        <p className="text-sm text-pgn-muted mb-5">
+          Explore Namibia's roads with confidence.
+        </p>
 
         {posts.length === 0 ? (
 
