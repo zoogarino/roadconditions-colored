@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { Plus, X, Search, MessageSquare } from "lucide-react";
+import { Plus, X, Search, MessageSquare, MapPin } from "lucide-react";
 import { toast } from "sonner";
 import SiteHeader from "@/components/web/SiteHeader";
 import WebPostCard from "@/components/web/WebPostCard";
